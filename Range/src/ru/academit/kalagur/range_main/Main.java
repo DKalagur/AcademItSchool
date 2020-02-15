@@ -4,7 +4,7 @@ import ru.academit.kalagur.range.Range;
 public class Main {
     public static void main(String[] args) {
         Range range1 = new Range(4, 45);
-        Range range2 = new Range(42, 56);
+        Range range2 = new Range(5, 56);
 
         // вывод результата пересечения отрезков
         Range outputResult;
@@ -33,8 +33,9 @@ public class Main {
 
         // вывод результата разности отрезков
         outputArrayResult = range1.getDifference(range2);
-        if (outputArrayResult == null) {
-            System.out.println("Пересечений нет");
+        if (outputArrayResult.length == 0) {
+        /*if (outputArrayResult == null) {*/
+            System.out.println("Разность отрезков равна 0");
         } else if (outputArrayResult.length == 2) {
             double x1 = outputArrayResult[0].getFrom();
             double y1 = outputArrayResult[0].getTo();
