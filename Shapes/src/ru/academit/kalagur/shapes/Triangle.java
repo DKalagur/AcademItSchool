@@ -1,6 +1,8 @@
 package ru.academit.kalagur.shapes;
 
 public class Triangle implements Shape {
+    public static final String shapeType = "Треугольник";
+
     private double x1;
     private double y1;
     private double x2;
@@ -17,22 +19,64 @@ public class Triangle implements Shape {
         this.y3 = y3;
     }
 
+    @Override
     public double getWidth() {
         return Math.max(Math.max(x1, x2), x3) - Math.min(Math.min(x1, x2), x3);
     }
 
+    @Override
     public double getHeight() {
         return Math.max(Math.max(y1, y2), y3) - Math.min(Math.min(y1, y2), y3);
     }
 
+    @Override
     public double getArea() {
-        return 0.5 * getHeight() * getWidth();
+        double semiPerimeter = getPerimeter() * 0.5;
+        return Math.sqrt(semiPerimeter * (semiPerimeter - getSideLength(x1, x2, y1, y2)) * (semiPerimeter - getSideLength(x1, x3, y1, y3)) * (semiPerimeter - getSideLength(x2, x3, y2, y3)));
     }
 
+    @Override
     public double getPerimeter() {
-        double side1Length = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-        double side2Length = Math.sqrt(Math.pow((x3 - x2), 2) + Math.pow((y3 - y2), 2));
-        double side3Length = Math.sqrt(Math.pow((x1 - x3), 2) + Math.pow((y1 - y3), 2));
-        return side1Length + side2Length + side3Length;
+        return getSideLength(x1, x2, y1, y2) + getSideLength(x1, x3, y1, y3) + getSideLength(x2, x3, y2, y3);
+    }
+
+    private double getSideLength(double x1, double x2, double y1, double y2) {
+        return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+    }
+
+    @Override
+    public String toString() {
+        return "Тип фигуры: " + shapeType +
+                "\nКоординаты вершин: (" + x1 + ", " + y1 + "), (" + x2 + ", " + y2 + "), (" + x3 + ", " + y3 + ")" +
+                "\nПлощадь фигуры: " + getArea() +
+                "\nПериметр фигуры: " + getPerimeter();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Triangle triangle = (Triangle) o;
+
+        return triangle.x1 == x1 &&
+                triangle.y1 == y1 &&
+                triangle.x2 == x2 &&
+                triangle.y2 == y2 &&
+                triangle.x3 == x3 &&
+                triangle.y3 == y3;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Double.hashCode(x1);
+        hash = prime * hash + Double.hashCode(y1);
+        hash = prime * hash + Double.hashCode(x2);
+        hash = prime * hash + Double.hashCode(y2);
+        hash = prime * hash + Double.hashCode(x3);
+        hash = prime * hash + Double.hashCode(y3);
+
+        return hash;
     }
 }
