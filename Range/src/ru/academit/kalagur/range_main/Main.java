@@ -3,8 +3,8 @@ import ru.academit.kalagur.range.Range;
 
 public class Main {
     public static void main(String[] args) {
-        Range range1 = new Range(4, 45);
-        Range range2 = new Range(5, 56);
+        Range range1 = new Range(20, 48);
+        Range range2 = new Range(24, 48);
 
         // вывод результата пересечения отрезков
         Range outputResult;

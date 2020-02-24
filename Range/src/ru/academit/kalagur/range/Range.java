@@ -38,124 +38,43 @@ public class Range {
 
     public Range getIntersection(Range range) {
         // интервалы не пересекаются
-        if ((range.from > this.to) || (this.from > range.to)) {
+        if ((range.from >= to) || (from >= range.to)) {
             return null;
         }
 
         // интервалы пересекаются
-        Range temp = new Range(0, 0);
-
-        if (this.from > range.from) {
-            if (this.to > range.to) {
-                temp.from = this.from;
-                temp.to = range.to;
-            } else {
-                temp.from = this.from;
-                temp.to = this.to;
-            }
-        } else if (this.to > range.to) {
-            temp.from = range.from;
-            temp.to = range.to;
-        } else {
-            temp.from = range.from;
-            temp.to = this.to;
-        }
-
-        return temp;
+        return new Range(Math.max(from, range.from), Math.min(to, range.to));
     }
 
     public Range[] getJoin(Range range) {
         // интервалы не пересекаются
-        if ((range.from > this.to) || (this.from > range.to)) {
-            Range temp1 = new Range(0, 0);
-            Range temp2 = new Range(0, 0);
-            Range[] twoElementsTempArray = new Range[2];
-
-            temp1.from = range.from;
-            temp1.to = range.to;
-            temp2.from = this.from;
-            temp2.to = this.to;
-            twoElementsTempArray[0] = temp1;
-            twoElementsTempArray[1] = temp2;
-
-            return twoElementsTempArray;
+        if ((range.from > to) || (from > range.to)) {
+            return new Range[]{new Range(range.from, range.to), new Range(from, to)};
         }
 
         // интервалы пересекаются
-        Range temp1 = new Range(0, 0);
-        Range[] oneElementTempArray = new Range[1];
-
-        if (this.from > range.from) {
-            if (this.to > range.to) {
-                temp1.from = range.from;
-                temp1.to = this.to;
-            } else {
-                temp1.from = range.from;
-                temp1.to = range.to;
-            }
-        } else if (this.to > range.to) {
-            temp1.from = this.from;
-            temp1.to = this.to;
-        } else {
-            temp1.from = this.from;
-            temp1.to = range.to;
-        }
-        oneElementTempArray[0] = temp1;
-
-        return oneElementTempArray;
+        return new Range[]{new Range(Math.min(from, range.from), Math.max(to, range.to))};
     }
 
     public Range[] getDifference(Range range) {
         // интервалы не пересекаются
-        if ((range.from > this.to) || (this.from > range.to)) {
-            Range temp1 = new Range(0, 0);
-            Range[] oneElementTempArray = new Range[1];
-
-            temp1.from = this.from;
-            temp1.to = this.to;
-            oneElementTempArray[0] = temp1;
-
-            return oneElementTempArray;
+        if ((range.from >= to) || (from >= range.to)) {
+            return new Range[]{new Range(from, to)};
         }
 
         // интервалы пересекаются
-        if (this.from > range.from) {
-            if (this.to > range.to) {
-                Range temp1 = new Range(0, 0);
-                Range[] oneElementTempArray = new Range[1];
-
-                temp1.from = range.to;
-                temp1.to = this.to;
-                oneElementTempArray[0] = temp1;
-
-                return oneElementTempArray;
+        if (range.from <= from) {
+            if (range.to >= to) {
+                return new Range[0];
             }
 
-            return new Range[0];
+            return new Range[]{new Range(range.to, to)};
         }
 
-        if (this.to > range.to) {
-            Range temp1 = new Range(0, 0);
-            Range temp2 = new Range(0, 0);
-            Range[] twoElementsTempArray = new Range[2];
-
-            temp1.from = this.from;
-            temp1.to = range.from;
-            temp2.from = range.to;
-            temp2.to = this.to;
-            twoElementsTempArray[0] = temp1;
-            twoElementsTempArray[1] = temp2;
-
-            return twoElementsTempArray;
+        if (range.to >= to) {
+            return new Range[]{new Range(from, range.from)};
         }
 
-        Range temp1 = new Range(0, 0);
-        Range[] oneElementTempArray = new Range[1];
-
-        temp1.from = this.from;
-        temp1.to = range.from;
-        oneElementTempArray[0] = temp1;
-
-        return oneElementTempArray;
+        return new Range[]{new Range(from, range.from), new Range(range.to, to)};
     }
 }
