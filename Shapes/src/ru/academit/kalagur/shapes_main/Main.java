@@ -8,13 +8,13 @@ public class Main {
     private static void searchMaxAreaShape(Shape[] shapes) {
         Arrays.sort(shapes, new AreaComparator());
         System.out.println("Фигура с наибольшей площадью:");
-        System.out.println(shapes[0]);
+        System.out.println(shapes[shapes.length - 1]);
     }
 
     private static void searchSecondPerimeterShape(Shape[] shapes) {
         Arrays.sort(shapes, new PerimeterComparator());
-        System.out.print("\nФигура со вторым по величине периметром:");
-        System.out.println(shapes[1]);
+        System.out.println("Фигура со вторым по величине периметром:");
+        System.out.println(shapes[shapes.length - 2]);
     }
 
     public static void main(String[] args) {

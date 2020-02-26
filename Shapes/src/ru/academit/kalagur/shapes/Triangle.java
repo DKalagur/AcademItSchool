@@ -1,7 +1,7 @@
 package ru.academit.kalagur.shapes;
 
 public class Triangle implements Shape {
-    public static final String shapeType = "Треугольник";
+    private static final String shapeType = "Треугольник";
 
     private double x1;
     private double y1;
@@ -32,30 +32,34 @@ public class Triangle implements Shape {
     @Override
     public double getArea() {
         double semiPerimeter = getPerimeter() * 0.5;
-        return Math.sqrt(semiPerimeter * (semiPerimeter - getSideLength(x1, x2, y1, y2)) * (semiPerimeter - getSideLength(x1, x3, y1, y3)) * (semiPerimeter - getSideLength(x2, x3, y2, y3)));
+        return Math.sqrt(semiPerimeter * (semiPerimeter - getSideLength(x1, y1, x2, y2)) * (semiPerimeter - getSideLength(x1, y1, x3, y3)) * (semiPerimeter - getSideLength(x2, y2, x3, y3)));
     }
 
     @Override
     public double getPerimeter() {
-        return getSideLength(x1, x2, y1, y2) + getSideLength(x1, x3, y1, y3) + getSideLength(x2, x3, y2, y3);
+        return getSideLength(x1, y1, x2, y2) + getSideLength(x1, y1, x3, y3) + getSideLength(x2, y2, x3, y3);
     }
 
-    private double getSideLength(double x1, double x2, double y1, double y2) {
+    private static double getSideLength(double x1, double y1, double x2, double y2) {
         return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
     }
 
     @Override
     public String toString() {
-        return "Тип фигуры: " + shapeType +
-                "\nКоординаты вершин: (" + x1 + ", " + y1 + "), (" + x2 + ", " + y2 + "), (" + x3 + ", " + y3 + ")" +
-                "\nПлощадь фигуры: " + getArea() +
-                "\nПериметр фигуры: " + getPerimeter();
+        return "Тип фигуры: " + shapeType + System.lineSeparator() +
+                "Координаты вершин: (" + x1 + ", " + y1 + "), (" + x2 + ", " + y2 + "), (" + x3 + ", " + y3 + ")" +
+                System.lineSeparator() + "Площадь фигуры: " + getArea() + System.lineSeparator() +
+                "Периметр фигуры: " + getPerimeter();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Triangle triangle = (Triangle) o;
 
         return triangle.x1 == x1 &&
