@@ -2,6 +2,8 @@ package ru.academit.kalagur.vector_main;
 
 import ru.academit.kalagur.vector.Vector;
 
+import static ru.academit.kalagur.vector.Vector.*;
+
 public class Main {
     public static void main(String[] args) {
         //тестирование конструкторов
@@ -12,6 +14,7 @@ public class Main {
 
         System.out.println("Проверка работы 2-го конструктора");
         double[] array = {1.0, 2.0, -4.0, -90};
+        //double[] array = {};
         Vector vector2 = new Vector(array);
         System.out.println("Длина вектора: " + vector2.getSize());
         System.out.println("Координаты вектора: " + vector2.toString());
@@ -24,15 +27,15 @@ public class Main {
         System.out.println("Проверка работы 4-го конструктора");
         double[] array2 = {11.0, 33.0, 40.0, 45, 56, 90, 99};
         double[] array3 = {1.0, 5.0, -1.0, 1, 1};
-        Vector vector41 = new Vector(7, array2);
+        Vector vector41 = new Vector(9, array2);
         System.out.println("Координаты вектора: " + vector41.toString());
         Vector vector42 = new Vector(5, array3);
         System.out.println("Координаты вектора: " + vector42.toString());
 
         System.out.println("Проверка работы сложения векторов");
         double[] arrayAdd1 = {11.0, 33.0, 40.0, 45};
-        //double[] arrayAdd2 = {1.0, 5.0};
-        double[] arrayAdd2 = {1.0, 5.0, 7, 12, 65, 1, 3};
+        double[] arrayAdd2 = {1.0, 5.0};
+        //double[] arrayAdd2 = {1.0, 5.0, 7, 12, 65, 1, 3};
         Vector vector51 = new Vector(arrayAdd1);
         Vector vector52 = new Vector(arrayAdd2);
         System.out.print(vector51.toString() + " + " + vector52.toString() + " = ");
@@ -41,16 +44,16 @@ public class Main {
 
         System.out.println("Проверка работы вычитания векторов");
         double[] arraySub1 = {11.0, 33.0, 40.0, 45};
-        double[] arraySub2 = {1.0, 5.0};
-        //[] arraySub2 = {1.0, 5.0, 7, 12, 65, 1, 3};
+        //double[] arraySub2 = {1.0, 5.0};
+        double[] arraySub2 = {1.0, 5.0, 7, 12, 65, 1, 3};
         Vector vector5 = new Vector(arraySub1);
         Vector vector6 = new Vector(arraySub2);
         System.out.print(vector5.toString() + " - " + vector6.toString() + " = ");
-        vector5.subVector(vector6);
+        vector5.subtractVector(vector6);
         System.out.println(vector5.toString());
 
         System.out.println("Проверка работы умножения вектора на скаляр");
-        vector6.multipleScalar(4);
+        vector6.multiplyScalar(4);
         System.out.println(vector6.toString());
         System.out.println("Проверка разворота вектора");
         vector6.turnVector();
@@ -89,13 +92,13 @@ public class Main {
         Vector vector91 = new Vector(arrayAdd3);
         Vector vector92 = new Vector(arrayAdd4);
 
-        Vector newVector = vector91.newVectorAddVector(vector92);
+        Vector newVector = addTwoVectors(vector91, vector92);
         System.out.println(newVector.toString());
 
-        Vector newVector1 = vector91.newVectorSubVector(vector92);
-        System.out.println(newVector1.toString());
-
-        Vector newVector2 = vector91.newVectorMultipleVector(vector92);
+        Vector newVector2 = subtractTwoVectors(vector91, vector92);
         System.out.println(newVector2.toString());
+
+        double newVector3 = multiplyTwoVectors(vector91, vector92);
+        System.out.println(newVector3);
     }
 }
