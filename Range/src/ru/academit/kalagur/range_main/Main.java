@@ -1,51 +1,39 @@
 package ru.academit.kalagur.range_main;
+
 import ru.academit.kalagur.range.Range;
 
 public class Main {
     public static void main(String[] args) {
         Range range1 = new Range(20, 48);
-        Range range2 = new Range(24, 48);
+        Range range2 = new Range(12, 41);
 
         // вывод результата пересечения отрезков
-        Range outputResult;
+        Range intersectionResult;
         if (range1.getIntersection(range2) == null) {
             System.out.println("Пересечений нет");
         } else {
-            outputResult = range1.getIntersection(range2);
-            double y = outputResult.getTo();
-            double x = outputResult.getFrom();
-            System.out.printf("Пересечение диапазонов: (%.1f; %.1f)%n", x, y);
+            intersectionResult = range1.getIntersection(range2);
+            System.out.println("Пересечение диапазонов:" + intersectionResult.toString());
         }
 
         // вывод результата объединения отрезков
-        Range[] outputArrayResult = range1.getJoin(range2);
-        if (outputArrayResult.length == 2) {
-            double x1 = outputArrayResult[0].getFrom();
-            double y1 = outputArrayResult[0].getTo();
-            double x2 = outputArrayResult[1].getFrom();
-            double y2 = outputArrayResult[1].getTo();
-            System.out.printf("Объединение диапазонов: (%.1f; %.1f), (%.1f; %.1f)%n", x1, y1, x2, y2);
+        Range[] unionResult = range1.getUnion(range2);
+
+        if (unionResult.length == 2) {
+            System.out.println("Объединение диапазонов:" + unionResult[0].toString() + unionResult[1].toString());
         } else {
-            double x1 = outputArrayResult[0].getFrom();
-            double y1 = outputArrayResult[0].getTo();
-            System.out.printf("Объединение диапазонов: (%.1f; %.1f)%n", x1, y1);
+            System.out.println("Объединение диапазонов:" + unionResult[0].toString());
         }
 
         // вывод результата разности отрезков
-        outputArrayResult = range1.getDifference(range2);
-        if (outputArrayResult.length == 0) {
-        /*if (outputArrayResult == null) {*/
+        Range[] differenceResult = range1.getDifference(range2);
+
+        if (differenceResult.length == 0) {
             System.out.println("Разность отрезков равна 0");
-        } else if (outputArrayResult.length == 2) {
-            double x1 = outputArrayResult[0].getFrom();
-            double y1 = outputArrayResult[0].getTo();
-            double x2 = outputArrayResult[1].getFrom();
-            double y2 = outputArrayResult[1].getTo();
-            System.out.printf("Разность диапазонов: (%.1f; %.1f), (%.1f; %.1f)%n", x1, y1, x2, y2);
+        } else if (differenceResult.length == 2) {
+            System.out.println("Разность диапазонов:" + differenceResult[0].toString() + differenceResult[1].toString());
         } else {
-            double x1 = outputArrayResult[0].getFrom();
-            double y1 = outputArrayResult[0].getTo();
-            System.out.printf("Разность диапазонов: (%.1f; %.1f)%n", x1, y1);
+            System.out.println("Разность диапазонов:" + differenceResult[0].toString());
         }
     }
 }

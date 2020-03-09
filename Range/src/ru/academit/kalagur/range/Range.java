@@ -14,12 +14,12 @@ public class Range {
         return from;
     }
 
-    public double getTo() {
-        return to;
-    }
-
     public void setFrom(double from) {
         this.from = from;
+    }
+
+    public double getTo() {
+        return to;
     }
 
     public void setTo(double to) {
@@ -46,7 +46,7 @@ public class Range {
         return new Range(Math.max(from, range.from), Math.min(to, range.to));
     }
 
-    public Range[] getJoin(Range range) {
+    public Range[] getUnion(Range range) {
         // интервалы не пересекаются
         if ((range.from > to) || (from > range.to)) {
             return new Range[]{new Range(range.from, range.to), new Range(from, to)};
@@ -76,5 +76,10 @@ public class Range {
         }
 
         return new Range[]{new Range(from, range.from), new Range(range.to, to)};
+    }
+
+    @Override
+    public String toString() {
+        return "{" + from + "; " + to + "}";
     }
 }
