@@ -92,13 +92,13 @@ public class Main {
         Vector vector91 = new Vector(arrayAdd3);
         Vector vector92 = new Vector(arrayAdd4);
 
-        Vector newVector = addTwoVectors(vector91, vector92);
+        Vector newVector = getSum(vector91, vector92);
         System.out.println(newVector.toString());
 
-        Vector newVector2 = subtractTwoVectors(vector91, vector92);
+        Vector newVector2 = getSubtraction(vector91, vector92);
         System.out.println(newVector2.toString());
 
-        double newVector3 = multiplyTwoVectors(vector91, vector92);
+        double newVector3 = getMultiplication(vector91, vector92);
         System.out.println(newVector3);
     }
 }

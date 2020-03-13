@@ -5,6 +5,7 @@ import java.util.Arrays;
 public class Vector {
     private double[] coordinates;
 
+    //Конструкторы
     public Vector(int n) {
         if (n <= 0) {
             throw new IllegalArgumentException("n должно быть больше 0");
@@ -13,12 +14,10 @@ public class Vector {
     }
 
     public Vector(Vector vector) {
-        coordinates = new double[vector.coordinates.length];
         coordinates = Arrays.copyOf(vector.coordinates, vector.coordinates.length);
     }
 
     public Vector(double[] array) {
-        this(array.length);
         coordinates = Arrays.copyOf(array, array.length);
     }
 
@@ -72,21 +71,21 @@ public class Vector {
     }
 
     public double getVectorLength() {
-        double vectorLength = 0;
+        double sum = 0;
 
         for (double e : coordinates) {
-            vectorLength += Math.pow(e, 2);
+            sum += Math.pow(e, 2);
         }
 
-        return Math.sqrt(vectorLength);
+        return Math.sqrt(sum);
     }
 
-    public double getElement(int number) {
-        return coordinates[number];
+    public double getElement(int index) {
+        return coordinates[index];
     }
 
-    public void setElement(int number, double value) {
-        coordinates[number] = value;
+    public void setElement(int index, double value) {
+        coordinates[index] = value;
     }
 
     @Override
@@ -121,53 +120,51 @@ public class Vector {
     private void checkArraySize(Vector vector) {
         if (coordinates.length < vector.coordinates.length) {
             double[] tempArray = coordinates;
-            coordinates = new double[vector.coordinates.length];
-
-            System.arraycopy(tempArray, 0, coordinates, 0, tempArray.length);
+            coordinates = Arrays.copyOf(tempArray, vector.coordinates.length);
         }
     }
 
     private static Vector[] changeVector(Vector vector1, Vector vector2) {
         if (vector1.coordinates.length > vector2.coordinates.length) {
             Vector newVector2 = new Vector(vector1.coordinates.length);
-            System.arraycopy(vector2.coordinates, 0, newVector2.coordinates, 0, vector2.coordinates.length);
+            newVector2.coordinates = Arrays.copyOf(vector2.coordinates, newVector2.coordinates.length);
 
             return new Vector[]{vector1, newVector2};
         }
 
         Vector newVector1 = new Vector(vector2.coordinates.length);
-        System.arraycopy(vector1.coordinates, 0, newVector1.coordinates, 0, vector1.coordinates.length);
+        newVector1.coordinates = Arrays.copyOf(vector1.coordinates, newVector1.coordinates.length);
 
         return new Vector[]{newVector1, vector2};
     }
 
-    public static Vector addTwoVectors(Vector vector1, Vector vector2) {
+    public static Vector getSum(Vector vector1, Vector vector2) {
         Vector[] arrayVector = changeVector(vector1, vector2);
-        Vector resultAddVector = new Vector(arrayVector[0].coordinates.length);
+        arrayVector[0].addVector(arrayVector[1]);
 
-        for (int i = 0; i < resultAddVector.coordinates.length; ++i) {
-            resultAddVector.coordinates[i] = arrayVector[0].coordinates[i] + arrayVector[1].coordinates[i];
-        }
-
-        return resultAddVector;
+        return arrayVector[0];
     }
 
-    public static Vector subtractTwoVectors(Vector vector1, Vector vector2) {
+    public static Vector getSubtraction(Vector vector1, Vector vector2) {
         Vector[] arrayVector = changeVector(vector1, vector2);
-        Vector resultSubtractionVector = new Vector(arrayVector[0].coordinates.length);
+        arrayVector[0].subtractVector(arrayVector[1]);
 
-        for (int i = 0; i < resultSubtractionVector.coordinates.length; ++i) {
-            resultSubtractionVector.coordinates[i] = arrayVector[0].coordinates[i] - arrayVector[1].coordinates[i];
-        }
-
-        return resultSubtractionVector;
+        return arrayVector[0];
     }
 
-    public static double multiplyTwoVectors(Vector vector1, Vector vector2) {
+    public static double getMultiplication(Vector vector1, Vector vector2) {
         Vector[] arrayVector = changeVector(vector1, vector2);
+        int length;
+
+        if (vector1.coordinates.length > vector2.coordinates.length) {
+            length = vector2.coordinates.length;
+        } else {
+            length = vector1.coordinates.length;
+        }
+
         double sum = 0;
 
-        for (int i = 0; i < arrayVector[0].coordinates.length; ++i) {
+        for (int i = 0; i < length; ++i) {
             sum += arrayVector[0].coordinates[i] * arrayVector[1].coordinates[i];
         }
 
