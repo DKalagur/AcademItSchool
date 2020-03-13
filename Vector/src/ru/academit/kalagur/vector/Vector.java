@@ -22,8 +22,7 @@ public class Vector {
     }
 
     public Vector(int n, double[] array) {
-        this(n);
-        coordinates = Arrays.copyOf(array, array.length);
+        coordinates = Arrays.copyOf(array, n);
     }
 
     public int getSize() {
