@@ -5,12 +5,12 @@ import java.util.Arrays;
 public class Vector {
     private double[] coordinates;
 
-    //Конструкторы
-    public Vector(int n) {
-        if (n <= 0) {
-            throw new IllegalArgumentException("n должно быть больше 0");
+    public Vector(int size) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размер вектора должен быть больше 0");
         }
-        coordinates = new double[n];
+
+        coordinates = new double[size];
     }
 
     public Vector(Vector vector) {
@@ -18,11 +18,19 @@ public class Vector {
     }
 
     public Vector(double[] array) {
+        if (array.length <= 0) {
+            throw new IllegalArgumentException("Длина массива должна быть больше 0");
+        }
+
         coordinates = Arrays.copyOf(array, array.length);
     }
 
-    public Vector(int n, double[] array) {
-        coordinates = Arrays.copyOf(array, n);
+    public Vector(int size, double[] array) {
+        if (array.length <= 0 || size <= 0) {
+            throw new IllegalArgumentException("Длина массива и n должны быть больше 0");
+        }
+
+        coordinates = Arrays.copyOf(array, size);
     }
 
     public int getSize() {
@@ -40,11 +48,14 @@ public class Vector {
 
         sb.append(coordinates[coordinates.length - 1]);
         sb.append("}");
+
         return sb.toString();
     }
 
     public void addVector(Vector vector) {
-        checkArraySize(vector);
+        if (coordinates.length < vector.coordinates.length) {
+            coordinates = Arrays.copyOf(coordinates, vector.coordinates.length);
+        }
 
         for (int i = 0; i < vector.coordinates.length; ++i) {
             coordinates[i] += vector.coordinates[i];
@@ -52,24 +63,26 @@ public class Vector {
     }
 
     public void subtractVector(Vector vector) {
-        checkArraySize(vector);
+        if (coordinates.length < vector.coordinates.length) {
+            coordinates = Arrays.copyOf(coordinates, vector.coordinates.length);
+        }
 
         for (int i = 0; i < vector.coordinates.length; ++i) {
             coordinates[i] -= vector.coordinates[i];
         }
     }
 
-    public void multiplyScalar(double scalar) {
+    public void multiplyByScalar(double scalar) {
         for (int i = 0; i < coordinates.length; ++i) {
             coordinates[i] *= scalar;
         }
     }
 
-    public void turnVector() {
-        multiplyScalar(-1);
+    public void turn() {
+        multiplyByScalar(-1);
     }
 
-    public double getVectorLength() {
+    public double getLength() {
         double sum = 0;
 
         for (double e : coordinates) {
@@ -103,7 +116,7 @@ public class Vector {
         }
 
         for (int i = 0; i < coordinates.length; ++i) {
-            if (vector.coordinates[i] == coordinates[i]) {
+            if (vector.coordinates[i] != coordinates[i]) {
                 return false;
             }
         }
@@ -116,55 +129,25 @@ public class Vector {
         return Arrays.hashCode(coordinates);
     }
 
-    private void checkArraySize(Vector vector) {
-        if (coordinates.length < vector.coordinates.length) {
-            double[] tempArray = coordinates;
-            coordinates = Arrays.copyOf(tempArray, vector.coordinates.length);
-        }
-    }
-
-    private static Vector[] changeVector(Vector vector1, Vector vector2) {
-        if (vector1.coordinates.length > vector2.coordinates.length) {
-            Vector newVector2 = new Vector(vector1.coordinates.length);
-            newVector2.coordinates = Arrays.copyOf(vector2.coordinates, newVector2.coordinates.length);
-
-            return new Vector[]{vector1, newVector2};
-        }
-
-        Vector newVector1 = new Vector(vector2.coordinates.length);
-        newVector1.coordinates = Arrays.copyOf(vector1.coordinates, newVector1.coordinates.length);
-
-        return new Vector[]{newVector1, vector2};
-    }
-
     public static Vector getSum(Vector vector1, Vector vector2) {
-        Vector[] arrayVector = changeVector(vector1, vector2);
-        arrayVector[0].addVector(arrayVector[1]);
+        Vector copyVector1 = new Vector(vector1);
+        copyVector1.addVector(vector2);
 
-        return arrayVector[0];
+        return copyVector1;
     }
 
     public static Vector getSubtraction(Vector vector1, Vector vector2) {
-        Vector[] arrayVector = changeVector(vector1, vector2);
-        arrayVector[0].subtractVector(arrayVector[1]);
+        Vector copyVector1 = new Vector(vector1);
+        copyVector1.subtractVector(vector2);
 
-        return arrayVector[0];
+        return copyVector1;
     }
 
-    public static double getMultiplication(Vector vector1, Vector vector2) {
-        Vector[] arrayVector = changeVector(vector1, vector2);
-        int length;
-
-        if (vector1.coordinates.length > vector2.coordinates.length) {
-            length = vector2.coordinates.length;
-        } else {
-            length = vector1.coordinates.length;
-        }
-
+    public static double getScalarMultiplication(Vector vector1, Vector vector2) {
         double sum = 0;
 
-        for (int i = 0; i < length; ++i) {
-            sum += arrayVector[0].coordinates[i] * arrayVector[1].coordinates[i];
+        for (int i = 0; i < Math.min(vector1.coordinates.length, vector2.coordinates.length); ++i) {
+            sum += vector1.coordinates[i] * vector2.coordinates[i];
         }
 
         return sum;
