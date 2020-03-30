@@ -26,8 +26,8 @@ public class Vector {
     }
 
     public Vector(int size, double[] array) {
-        if (array.length <= 0 || size <= 0) {
-            throw new IllegalArgumentException("Длина массива и n должны быть больше 0");
+        if (size < 0) {
+            throw new IllegalArgumentException("n должен быть не меньше 0");
         }
 
         coordinates = Arrays.copyOf(array, size);
@@ -146,7 +146,8 @@ public class Vector {
     public static double getScalarMultiplication(Vector vector1, Vector vector2) {
         double sum = 0;
 
-        for (int i = 0; i < Math.min(vector1.coordinates.length, vector2.coordinates.length); ++i) {
+        int minLength = Math.min(vector1.coordinates.length, vector2.coordinates.length);
+        for (int i = 0; i < minLength; ++i) {
             sum += vector1.coordinates[i] * vector2.coordinates[i];
         }
 
