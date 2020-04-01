@@ -88,16 +88,12 @@ public class MyHashTable<E> implements Collection<E> {
     @Override
     public <T> T[] toArray(T[] a) {
         Object[] array = toArray();
-
         if (length > a.length) {
             return (T[]) Arrays.copyOf(array, length, a.getClass());
         }
 
         T[] temp = (T[]) Arrays.copyOf(array, a.length, a.getClass());
-
-        if (a.length > length + 1) {
-            System.arraycopy(a, length + 1, temp, length + 1, a.length - length - 1);
-        }
+        System.arraycopy(a, length + 1, temp, length + 1, a.length - length - 1);
 
         return temp;
     }
@@ -112,20 +108,25 @@ public class MyHashTable<E> implements Collection<E> {
             length++;
 
             return true;
-        } else {
-            if (!table[index].contains(e)) {
-                table[index].add(e);
-                length++;
-
-                return true;
-            }
-
-            return false;
         }
+
+        if (!table[index].contains(e)) {
+            table[index].add(e);
+            length++;
+
+            return true;
+        }
+
+        return false;
+
     }
 
     @Override
     public boolean remove(Object o) {
+        if (length == 0) {
+            throw new NullPointerException("Невозможно удалить элемент из списка, т.к. список пуст");
+        }
+
         if (!contains(o)) {
             return false;
         }
@@ -179,6 +180,10 @@ public class MyHashTable<E> implements Collection<E> {
 
     @Override //возвращает true если удален хотя бы один элемент
     public boolean removeAll(Collection<?> c) {
+        if (length == 0) {
+            throw new NullPointerException("Невозможно удалить элементы из списка, т.к. список пуст");
+        }
+
         if (c == null) {
             throw new IllegalArgumentException("Недопустимый аргумент (передана пустая коллекция)");
         }
@@ -229,28 +234,28 @@ public class MyHashTable<E> implements Collection<E> {
     public String toString() {
         if (length == 0) {
             return "{}";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{");
+        }
 
-            for (int i = 0; i < capacity - 1; i++) {
-                if (table[i] == null) {
-                    sb.append("[]");
-                } else {
-                    sb.append(table[i].toString());
-                }
-                sb.append(", ");
-            }
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
 
-            if (table[capacity - 1] == null) {
+        for (int i = 0; i < capacity - 1; i++) {
+            if (table[i] == null) {
                 sb.append("[]");
             } else {
-                sb.append(table[capacity - 1].toString());
+                sb.append(table[i].toString());
             }
-
-            sb.append("}");
-            return sb.toString();
+            sb.append(", ");
         }
+
+        if (table[capacity - 1] == null) {
+            sb.append("[]");
+        } else {
+            sb.append(table[capacity - 1].toString());
+        }
+
+        sb.append("}");
+        return sb.toString();
     }
 
     public int getCapacity() {

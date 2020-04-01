@@ -47,7 +47,7 @@ public class Main {
         System.out.println("Скопированный массив" + Arrays.toString(array1));
 
         // проверка toArray(T[] a)
-        Object[] array4 = new Object[]{6, 7, 4, 8, 0, 3, 2, 4};
+        Object[] array4 = new Object[]{6, 7, 8, 9, 5};
         //Object[] array3 = newTable.toArray(new Integer [7]);
         Object[] array3 = newTable.toArray(array4);
         System.out.println("Скопированный массив" + Arrays.toString(array3));
