@@ -26,8 +26,8 @@ public class Vector {
     }
 
     public Vector(int size, double[] array) {
-        if (size < 0) {
-            throw new IllegalArgumentException("n должен быть не меньше 0");
+        if (size <= 0) {
+            throw new IllegalArgumentException("n должен быть больше 0");
         }
 
         coordinates = Arrays.copyOf(array, size);

@@ -30,7 +30,7 @@ public class Main {
         //double[] array3 = {};
         Vector vector41 = new Vector(9, array2);
         System.out.println("Координаты вектора: " + vector41.toString());
-        Vector vector42 = new Vector(1, array3);
+        Vector vector42 = new Vector(4, new double[0]);
         System.out.println("Координаты вектора: " + vector42.toString());
 
         System.out.println("Проверка работы сложения векторов");
