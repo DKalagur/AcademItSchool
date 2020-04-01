@@ -180,36 +180,19 @@ public class MyArrayList<E> implements List<E> {
 
     @Override //возвращает true если список изменился
     public boolean retainAll(Collection<?> c) {
-        Iterator<?> iterator = c.iterator();
-        boolean[] isContains = new boolean[length];
-        boolean isChanged = false;
+        ArrayList<Object> list = new ArrayList<>(Arrays.asList(toArray()));
 
-        while (iterator.hasNext()) {
-            Object temp = iterator.next();
-            for (int i = 0; i < length; ++i) {
-                if (items[i].equals(temp)) {
-                    isContains[i] = true;
-                    isChanged = true;
-                }
+        for (Object cItem : c) {
+            if (contains(cItem)) {
+                list.remove(cItem);
             }
         }
 
-        if (!isChanged) {
+        if (list.isEmpty()) {
             return false;
         }
 
-        for (int i = 0; i < length; ++i) {
-            if (!isContains[i]) {
-                items[i] = null;
-            }
-        }
-
-        for (int i = 0; i < length; ++i) {
-            if (items[i] == null) {
-                remove(i);
-                --i;
-            }
-        }
+        removeAll(list);
 
         return true;
     }
@@ -307,7 +290,7 @@ public class MyArrayList<E> implements List<E> {
         return null;
     }
 
-    @Override 
+    @Override
     public String toString() {
         if (length == 0) {
             return "{}";

@@ -56,9 +56,9 @@ public class Main {
         //newList.remove(2);
         //System.out.println(newList);
 
-        ArrayList<Integer> c2 = new ArrayList<>(Arrays.asList(23, 101));
-        System.out.println(newList.retainAll(c2));
-        System.out.println(newList);
+        ArrayList<Integer> c2 = new ArrayList<>(Arrays.asList(666, 23));
+        System.out.println("Проверка retainAll: " + newList.retainAll(c2));
+        System.out.println("После retainAll: " + newList);
 
         System.out.println("Вместимость списка: " + newList.getCapacity());
         newList.trimToSize();
