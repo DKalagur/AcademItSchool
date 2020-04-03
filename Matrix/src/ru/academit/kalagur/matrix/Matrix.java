@@ -2,8 +2,6 @@ package ru.academit.kalagur.matrix;
 
 import ru.academit.kalagur.vector.Vector;
 
-import java.util.Arrays;
-
 public class Matrix {
     private Vector[] rows;
 
@@ -34,35 +32,51 @@ public class Matrix {
             throw new IllegalArgumentException("Количество строк и столбцов матрицы должно быть больше 0");
         }
 
-        int length = array[0].length;
-        if (array.length > 1) {
-            for (int i = 1; i < array.length; ++i) {
-                if (array[i].length != length) {
-                    throw new IllegalArgumentException("Массив должен содержать строки одинакового размера");
-                }
+        int maxLength = array[0].length;
+        for (int i = 1; i < array.length; ++i) {
+            if (array[i].length > maxLength) {
+                maxLength = array[i].length;
             }
         }
+
         rows = new Vector[array.length];
 
         for (int i = 0; i < array.length; ++i) {
-            rows[i] = new Vector(array[i]);
+            rows[i] = new Vector(maxLength, array[i]);
         }
     }
 
     // конструктор4
     public Matrix(Vector[] vectors) {
-        int length = vectors[0].getSize();
-        if (vectors.length > 1) {
-            for (int i = 1; i < vectors.length; ++i) {
-                if (vectors[i].getSize() != length) {
-                    throw new IllegalArgumentException("Массив должен содержать векторы одинакового размера");
-                }
+        if (vectors.length == 0) {
+            throw new IllegalArgumentException("Переданный массив векторов пуст (не содежит векторы)");
+        }
+
+        // делаю проверку: если все вектора null-кидаю исключение, если есть хотя бы один вектор не null- нахожу
+        // не null вектор с максимальной длиной, а векторы null заменяю на векторы, заполненные нулями
+        int maxLength = 0;
+        boolean isAllVectorsNull = true;
+
+        for (Vector e : vectors) {
+            if (e != null) {
+                maxLength = e.getSize();
+                isAllVectorsNull = false;
             }
         }
+
+        if (isAllVectorsNull) {
+            throw new IllegalArgumentException("Переданный массив содежит только пустые вектора (null)");
+        }
+
         rows = new Vector[vectors.length];
 
         for (int i = 0; i < vectors.length; ++i) {
-            rows[i] = new Vector(vectors[i]);
+            if (vectors[i] != null) {
+                rows[i] = new Vector(vectors[i]);
+                rows[i].increaseLength(maxLength);
+            } else {
+                rows[i] = new Vector(maxLength);
+            }
         }
     }
 
@@ -75,13 +89,9 @@ public class Matrix {
         return rows[0].getSize();
     }
 
-    public String getMatrixDimensions() {
-        return "Размер матрицы: " + getColumnsQuantity() + "x" + getRowsQuantity();
-    }
-
     public Vector getRow(int index) {
         if (index < 0 || index >= rows.length) {
-            throw new IllegalArgumentException("Введен недопустимый индекс");
+            throw new IndexOutOfBoundsException("Введен недопустимый индекс");
         }
 
         return new Vector(rows[index]);
@@ -89,7 +99,7 @@ public class Matrix {
 
     public void setRow(int index, Vector vector) {
         if (index < 0 || index >= rows.length) {
-            throw new ArrayIndexOutOfBoundsException("Введен недопустимый индекс");
+            throw new IndexOutOfBoundsException("Введен недопустимый индекс");
         }
 
         if (vector.getSize() != getColumnsQuantity()) {
@@ -99,9 +109,9 @@ public class Matrix {
         rows[index] = new Vector(vector);
     }
 
-    public Vector getColumnVector(int index) {
+    public Vector getColumn(int index) {
         if (index < 0 || index >= getColumnsQuantity()) {
-            throw new IllegalArgumentException("Введен недопустимый индекс");
+            throw new IndexOutOfBoundsException("Введен недопустимый индекс");
         }
 
         Vector column = new Vector(rows.length);
@@ -114,16 +124,22 @@ public class Matrix {
     }
 
     // транспонирование матрицы
-    public void transposeMatrix() {
+    public void transpose() {
+        // создаем массив векторов инвертированного размера
+        Vector[] transpose = new Vector[getColumnsQuantity()];
 
-        Matrix transposedMatrix = new Matrix(getColumnsQuantity(), getRowsQuantity());
+        for (int i = 0; i < transpose.length; i++) {
+            transpose[i] = new Vector(getRowsQuantity());
+        }
 
-        for (int i = 0; i < getColumnsQuantity(); ++i) {
+        // заполняем массив векторов данными
+        for (int i = 0; i < transpose.length; ++i) {
             for (int j = 0; j < getRowsQuantity(); ++j) {
-                transposedMatrix.rows[i].setElement(j, rows[j].getElement(i));
+                transpose[i].setElement(j, rows[j].getElement(i));
             }
         }
-        rows = Arrays.copyOf(transposedMatrix.rows, transposedMatrix.rows.length);
+
+        rows = transpose;
     }
 
     // умножение матрицы на скаляр
@@ -139,7 +155,7 @@ public class Matrix {
             throw new IllegalArgumentException("Матрица должна быть квадратной");
         }
 
-        // копирование матрицы в массив
+        //копирование матрицы в массив
         double[][] matrix = new double[getColumnsQuantity()][getColumnsQuantity()];
 
         for (int i = 0; i < getColumnsQuantity(); ++i) {
@@ -148,13 +164,14 @@ public class Matrix {
             }
         }
 
-        // приведение матрицы к треугольному типу
+        //приведение матрицы к треугольному типу
         int signCount = 0;
+        final double epsilon = 1.0e-10;
         int rowLength = matrix[0].length;
+
         for (int currentRow = 0; currentRow < rowLength; ++currentRow) {
-            double epsilon = 1.0e-10;
             for (int i = currentRow + 1; i < rowLength; ++i) {
-                if (Math.abs(matrix[currentRow][currentRow]) > epsilon) {
+                if (Math.abs(matrix[currentRow][currentRow]) <= epsilon) {
                     changeRows(matrix, currentRow); //диагональные элементы должны быть не нулевые
                     --i;
                     ++signCount;
@@ -168,14 +185,14 @@ public class Matrix {
             }
         }
 
-        // расчет определителя
+        //расчет определителя
         double determinant = 1;
 
         for (int i = 0; i < rowLength; ++i) {
             determinant *= matrix[i][i];
         }
 
-        // учет знака матрицы
+        //учет знака матрицы
         if (signCount % 2 == 0) {
             return determinant;
         }
@@ -184,9 +201,11 @@ public class Matrix {
     }
 
     private static void changeRows(double[][] matrix, int currentRow) {
+        final double epsilon = 1.0e-10;
         int rowLength = matrix[0].length;
+
         for (int i = currentRow + 1; i < rowLength; ++i) {
-            if (matrix[i][currentRow] != 0) {
+            if (Math.abs(matrix[i][currentRow]) > epsilon) {
                 double[] temp = new double[rowLength];
 
                 for (int y = currentRow; y < rowLength; ++y) {
@@ -194,23 +213,21 @@ public class Matrix {
                     matrix[currentRow][y] = matrix[currentRow + i][y];
                     matrix[currentRow + i][y] = temp[y];
                 }
-
                 return;
             }
         }
     }
+
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
 
         for (int i = 0; i < rows.length - 1; ++i) {
-            sb.append(rows[i]);
-            sb.append(", ");
+            sb.append(rows[i]).append(", ");
         }
 
-        sb.append(rows[rows.length - 1].toString());
-        sb.append("}");
+        sb.append(rows[rows.length - 1]).append("}");
 
         return sb.toString();
     }
@@ -277,14 +294,14 @@ public class Matrix {
 
         Matrix resultMatrix = new Matrix(matrix1.getRowsQuantity(), matrix2.getColumnsQuantity());
 
-        for (int k = 0; k < resultMatrix.getRowsQuantity(); ++k) {
-            for (int i = 0; i < resultMatrix.getColumnsQuantity(); ++i) {
+        for (int i = 0; i < resultMatrix.getRowsQuantity(); ++i) {
+            for (int j = 0; j < resultMatrix.getColumnsQuantity(); ++j) {
                 double sum = 0;
 
-                for (int j = 0; j < matrix1.getColumnsQuantity(); ++j) {
-                    sum += matrix1.rows[k].getElement(j) * matrix2.rows[j].getElement(i);
+                for (int k = 0; k < matrix1.getColumnsQuantity(); ++k) {
+                    sum += matrix1.rows[i].getElement(k) * matrix2.rows[k].getElement(j);
                 }
-                resultMatrix.rows[k].setElement(i, sum);
+                resultMatrix.rows[i].setElement(j, sum);
             }
         }
 
