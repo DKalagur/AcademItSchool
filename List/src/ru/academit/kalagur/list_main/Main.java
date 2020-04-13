@@ -2,6 +2,8 @@ package ru.academit.kalagur.list_main;
 
 import ru.academit.kalagur.list.SinglyLinkedList;
 
+import java.util.Objects;
+
 public class Main {
     public static void main(String[] args) {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
@@ -43,16 +45,37 @@ public class Main {
         System.out.println("Элемент удален: " + x3);
 
         //разворот списка
-        list.removeElement(0);
-        list.removeElement(0);
+        //list.removeElement(0);
+        //list.removeElement(0);
         //list.removeElement(0);
         // list.removeElement(0);
-        System.out.println("Исходный массив:"+ list);
-        list.tern();
-        System.out.println("Развернутый массив:"+ list);
+        System.out.println("Исходный массив:" + list);
+        list.turn();
+        System.out.println("Развернутый массив:" + list);
 
         //копирование списка
         SinglyLinkedList<Integer> copiedList = list.copy();
         System.out.println("Скопированный массив:" + copiedList);
-   }
+
+        // удадание первого элемента V2
+        SinglyLinkedList<Integer> test = new SinglyLinkedList<>();
+        test.insertFirstElement(100);
+        System.out.println(test);
+        test.removeFirstElement();
+        System.out.println(test);
+
+        // проверка remove null-данные
+        //list.insertFirstElement(null);
+        list.insertElement(1, null);
+        list.insertFirstElement(9);
+        list.insertFirstElement(10);
+        list.insertElement(0, null);
+        System.out.println(list);
+        System.out.println(list.remove(null));
+        System.out.println("После удаления элемента: " + list);
+        Integer x = 1;
+        Integer y = 1;
+        boolean xy = Objects.equals(x, y);
+        System.out.println(xy);
+    }
 }

@@ -1,5 +1,8 @@
 package ru.academit.kalagur.list;
 
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
     private int count;
@@ -10,17 +13,13 @@ public class SinglyLinkedList<T> {
 
     public T getFirstElement() {
         if (count == 0) {
-            throw new NullPointerException("Список пуст. Невозможно получить первый элемент");
+            throw new NoSuchElementException("Список пуст. Невозможно получить первый элемент");
         }
 
         return head.getData();
     }
 
     public T getElement(int index) {
-        if (count == 0) {
-            throw new NullPointerException("Список пуст. Невозможно получить элемент по индексу");
-        }
-
         if (index >= count || index < 0) {
             throw new IndexOutOfBoundsException("Список не содержит элемент по указанному индексу");
         }
@@ -31,10 +30,6 @@ public class SinglyLinkedList<T> {
     }
 
     public T setElement(int index, T data) {
-        if (count == 0) {
-            throw new NullPointerException("Список пуст. Невозможно установить значение элемента по индексу");
-        }
-
         if (index >= count || index < 0) {
             throw new IndexOutOfBoundsException("Список не содержит элемент по указанному индексу");
         }
@@ -47,10 +42,6 @@ public class SinglyLinkedList<T> {
     }
 
     public T removeElement(int index) {
-        if (count == 0) {
-            throw new NullPointerException("Список пуст. Невозможно удалить элемент по индексу");
-        }
-
         if (index >= count || index < 0) {
             throw new IndexOutOfBoundsException("Список не содержит элемент по указанному индексу");
         }
@@ -59,8 +50,8 @@ public class SinglyLinkedList<T> {
             return removeFirstElement();
         }
 
-        ListItem<T> prev = findChosenAndPreviousElement(index)[0];
-        ListItem<T> p = findChosenAndPreviousElement(index)[1];
+        ListItem<T> prev = findChosenElement(index - 1);
+        ListItem<T> p = prev.getNext();
 
         T temp = p.getData();
         prev.setNext(p.getNext());
@@ -79,7 +70,7 @@ public class SinglyLinkedList<T> {
             return;
         }
 
-        ListItem<T> prev = findChosenAndPreviousElement(index)[0];
+        ListItem<T> prev = findChosenElement(index - 1);
         ListItem<T> element = new ListItem<>(data, prev.getNext());
         prev.setNext(element);
         ++count;
@@ -87,17 +78,17 @@ public class SinglyLinkedList<T> {
 
     public boolean remove(T data) {
         if (count == 0) {
-            throw new NullPointerException("Список пуст. Невозможно удалить элемент");
+            return false;
         }
 
-        if (head.getData().equals(data)) {
+        if (Objects.equals(data, head.getData())) {
             removeFirstElement();
 
             return true;
         }
 
         for (ListItem<T> prev = head, p = head.getNext(); p != null; prev = p, p = p.getNext()) {
-            if (p.getData().equals(data)) {
+            if (Objects.equals(data, p.getData())) {
                 prev.setNext(p.getNext());
                 --count;
 
@@ -108,7 +99,6 @@ public class SinglyLinkedList<T> {
         return false;
     }
 
-
     public void insertFirstElement(T data) {
         head = new ListItem<>(data, head);
         ++count;
@@ -116,50 +106,48 @@ public class SinglyLinkedList<T> {
 
     public T removeFirstElement() {
         if (count == 0) {
-            throw new NullPointerException("Список пуст. Невозможно удалить первый элемент");
+            throw new NoSuchElementException("Список пуст. Невозможно удалить первый элемент");
         }
 
         T temp = head.getData();
-
-        if (count == 1) {
-            head = null;
-        } else {
-            head = head.getNext();
-        }
-
+        head = head.getNext();
         --count;
 
         return temp;
     }
 
-    public void tern() {
-        if (count == 0) {
-            throw new NullPointerException("Список пуст. Невозможно развернуть список");
+    public void turn() {
+        ListItem<T> currentElement = head;
+        ListItem<T> prev = null;
+
+        while (currentElement != null) {
+            ListItem<T> temp = currentElement.getNext();
+            currentElement.setNext(prev);
+            prev = currentElement;
+            currentElement = temp;
         }
 
-        if (count == 1) {
-            return;
-        }
-
-        int index = 0;
-        for (ListItem<T> p = head; p != null; p = p.getNext()) {
-            ++index;
-            insertFirstElement(removeElement(index));
-        }
-    }
-
-    public SinglyLinkedList<T> getTurn() {
-        SinglyLinkedList<T> invertedList = new SinglyLinkedList<>();
-        for (ListItem<T> p = head; p != null; p = p.getNext()) {
-            invertedList.insertFirstElement(p.getData());
-        }
-
-        return invertedList;
+        head = prev;
     }
 
     public SinglyLinkedList<T> copy() {
-        SinglyLinkedList<T> copiedList = getTurn();
-        copiedList.tern();
+        SinglyLinkedList<T> copiedList = new SinglyLinkedList<>();
+
+        if (head == null) {
+            return copiedList;
+        }
+
+        copiedList.head = new ListItem<>(head.getData(), null);
+        ListItem<T> currentElement = copiedList.head;
+
+        for (ListItem<T> p = head.getNext(); p != null; p = p.getNext()) {
+            ListItem<T> copiedListItem = new ListItem<>(p.getData(), null);
+            currentElement.setNext(copiedListItem);
+            currentElement = copiedListItem;
+        }
+
+        copiedList.count = getSize();
+
         return copiedList;
     }
 
@@ -191,18 +179,7 @@ public class SinglyLinkedList<T> {
         for (int i = 0; i < index; ++i) {
             p = p.getNext();
         }
+
         return p;
-    }
-
-    private ListItem<T>[] findChosenAndPreviousElement(int index) {
-        ListItem<T> p = head;
-        ListItem<T> prev = null;
-
-        for (int i = 0; i < index; ++i) {
-            prev = p;
-            p = p.getNext();
-        }
-
-        return new ListItem[]{prev, p};
     }
 }
