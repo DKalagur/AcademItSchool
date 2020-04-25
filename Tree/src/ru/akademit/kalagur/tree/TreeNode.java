@@ -1,6 +1,6 @@
 package ru.akademit.kalagur.tree;
 
-public class TreeNode<T extends Comparable<T>> implements Comparable<T> {
+public class TreeNode<T> {
     private TreeNode<T> left;
     private TreeNode<T> right;
     private T data;
@@ -11,11 +11,11 @@ public class TreeNode<T extends Comparable<T>> implements Comparable<T> {
         this.data = data;
     }
 
-    public TreeNode(T data) {
+    /*public TreeNode(T data) {
         left = null;
         right = null;
         this.data = data;
-    }
+    }*/
 
 
     public TreeNode<T> getLeft() {
@@ -41,9 +41,10 @@ public class TreeNode<T extends Comparable<T>> implements Comparable<T> {
     public void setData(T data) {
         this.data = data;
     }
-
+/*
     @Override
     public int compareTo(T o) {
         return data.compareTo(o);
     }
+*/
 }
