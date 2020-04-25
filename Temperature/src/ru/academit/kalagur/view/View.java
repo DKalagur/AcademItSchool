@@ -1,5 +1,7 @@
 package ru.academit.kalagur.view;
 
+import ru.academit.kalagur.model.Model;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,7 +25,7 @@ public class View {
             int width = screenSize.width;
             int height = screenSize.height;
 
-            frame.setSize((int) (width * 0.35), (int) (height * 0.4));
+            frame.setSize((int) (width * 0.42), (int) (height * 0.42));
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setVisible(true);
             frame.setLocationRelativeTo(null);
@@ -63,11 +65,10 @@ public class View {
             inputField = new JTextField("0", 8);
             GridBagConstraints c3 = new GridBagConstraints();
 
-            c3.gridx = 2;
+            c3.gridx = 3;
             c3.gridy = 1;
-            c3.gridwidth = 2;
+            c3.gridwidth = 1;
             c3.gridheight = 1;
-            c3.insets = new Insets(1, 1, 1, 1);
 
             frame.add(inputField, c3);
 
@@ -88,11 +89,10 @@ public class View {
             fromScale = new JComboBox<>(scales);
             GridBagConstraints c5 = new GridBagConstraints();
 
-            c5.gridx = 2;
+            c5.gridx = 3;
             c5.gridy = 2;
-            c5.gridwidth = 2;
+            c5.gridwidth = 1;
             c5.gridheight = 1;
-            c5.insets = new Insets(1, 1, 1, 1);
 
             frame.add(fromScale, c5);
 
@@ -112,9 +112,9 @@ public class View {
             toScale = new JComboBox<>(scales);
             GridBagConstraints c7 = new GridBagConstraints();
 
-            c7.gridx = 2;
+            c7.gridx = 3;
             c7.gridy = 3;
-            c7.gridwidth = 2;
+            c7.gridwidth = 1;
             c7.gridheight = 1;
 
             frame.add(toScale, c7);
@@ -125,27 +125,44 @@ public class View {
 
             c8.gridx = 2;
             c8.gridy = 4;
-            c8.gridwidth = 2;
+            c8.gridwidth = 1;
             c8.gridheight = 1;
-            c8.anchor = GridBagConstraints.WEST;
             c8.insets = new Insets(20, 0, 0, 0);
 
             frame.add(button, c8);
 
             // создаем и настраиваем output
-            output = new JLabel("");
+            output = new JLabel();
             GridBagConstraints c9 = new GridBagConstraints();
 
             output.setVisible(false);
-            c9.gridx = 3;
+            c9.gridx = 2;
             c9.gridy = 5;
-            c9.gridwidth = 2;
+            c9.gridwidth = 1;
             c9.gridheight = 1;
-            //c9.anchor = GridBagConstraints.WEST;
-            c9.insets = new Insets(20, 20, 0, 0);
+            c9.insets = new Insets(20, 0, 0, 0);
 
             frame.add(output, c9);
-            //frame.getContentPane().setLayout(gbl);
+
+            button.addActionListener(e -> {
+                try {
+                    String text = inputField.getText();
+                    Integer number = Integer.parseInt(text);
+
+                    Object from = fromScale.getSelectedItem();
+                    Object to = toScale.getSelectedItem();
+
+                    Model model = new Model(from, to, number);
+
+                    Double result = model.convertValue(from, to, number);
+
+                    output.setText(result.toString());
+                    output.setVisible(true);
+                } catch (Exception exception) {
+                    output.setText("Ошибка! Введите число!");
+                    output.setVisible(true);
+                }
+            });
 
         });
     }
