@@ -106,5 +106,35 @@ public class Main {
         //Integer[] c4 = newList.toArray(new Integer[5]);
         Integer[] c4 = newList.toArray(array);
         System.out.println("Передаем массив меньшего размера: " + Arrays.toString(c4));*/
+
+        System.out.println("Создание нового списка");
+        MyArrayList<Integer> ap = new MyArrayList<>(0);
+        ap.add(34);
+        System.out.println(ap);
+        ap.add(1,5);
+        System.out.println(ap);
+        ap.remove((Integer)5);
+        //System.out.println(ap);
+        ap.add(null);
+        ap.add(10);
+        ap.add(11);
+        ap.add(13);
+        ap.add(16);
+        ap.add(10);
+        ap.add(100);
+        ap.add(666);
+        System.out.println(ap);
+        ap.remove((Integer)11);
+        System.out.println(ap);
+        System.out.println(ap.contains(13));
+        System.out.println(ap.lastIndexOf(10));
+
+        ArrayList<Integer> ccc = new ArrayList<>(Arrays.asList(-1,-2,-3,-4));
+        ap.addAll(1,ccc);
+        ap.clear();
+        System.out.println(ap);
+
+        ArrayList<Integer> c3 = new ArrayList<>(10);
+        System.out.println(c3);
     }
 }
