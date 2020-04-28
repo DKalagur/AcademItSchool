@@ -1,93 +1,89 @@
 package ru.akademit.kalagur.graph;
 
 import java.util.LinkedList;
+import java.util.function.Consumer;
 
 public class Graph {
     private int[][] array;
-    private int root;
 
-    public Graph(int[][] array, int root) {
-        this.array = array;
-        this.root = root;
-
+    public Graph(int[][] array) {
         // проверка если матрица неквадратная
         int length = array[0].length;
+
+        if (length != array.length) {
+            throw new IllegalArgumentException("Матрица должна быть квадратной");
+        }
+
         for (int[] e : array) {
             if (e.length != length) {
                 throw new IllegalArgumentException("Матрица должна быть квадратной");
             }
         }
 
+        this.array = array;
     }
 
-    public void iterateInWidth() {
+    public void iterateInWidth(Consumer<Integer> printer) {
         boolean[] isVisited = new boolean[array.length];
         LinkedList<Integer> queue = new LinkedList<>();
-        queue.addLast(root);
+        queue.addLast(0);
 
-        visitInWidth(queue, isVisited);
+        visitInWidth(queue, isVisited, printer);
 
         for (int i = 0; i < array.length; ++i) {
             if (!isVisited[i]) {
                 queue.addLast(i);
-                visitInWidth(queue, isVisited);
+                visitInWidth(queue, isVisited, printer);
             }
         }
     }
 
-    private void visitInWidth(LinkedList<Integer> queue, boolean isVisited[]) {
-        int currentNode;
-
+    private void visitInWidth(LinkedList<Integer> queue, boolean isVisited[], Consumer<Integer> printer) {
         while (!queue.isEmpty()) {
-            currentNode = queue.remove();
+            int currentNode = queue.remove();
+
             if (!isVisited[currentNode]) {
-                System.out.print(currentNode + ", ");
+                printer.accept(currentNode);
                 isVisited[currentNode] = true;
             }
 
             for (int i = 0; i < array.length; ++i) {
-                if ((array[currentNode][i] == 1) && (!isVisited[i])) {
+                if (array[currentNode][i] == 1 && !isVisited[i]) {
                     queue.addLast(i);
                 }
             }
         }
     }
 
-    public void iterateInDepth() {
+    public void iterateInDepth(Consumer<Integer> printer) {
         boolean[] isVisited = new boolean[array.length];
         LinkedList<Integer> stack = new LinkedList<>();
-        stack.add(root);
+        stack.add(0);
 
-        visitInDepth(stack, isVisited);
+        visitInDepth(stack, isVisited, printer);
 
         for (int i = 0; i < array.length; ++i) {
             if (!isVisited[i]) {
                 stack.addLast(i);
-                visitInWidth(stack, isVisited);
+                visitInDepth(stack, isVisited, printer);
             }
         }
     }
 
-    private void visitInDepth(LinkedList<Integer> stack, boolean isVisited[]) {
-        int currentNode;
-
+    private void visitInDepth(LinkedList<Integer> stack, boolean isVisited[], Consumer<Integer> printer) {
         while (!stack.isEmpty()) {
-            currentNode = stack.removeLast();
+            int currentNode = stack.removeLast();
 
             if (!isVisited[currentNode]) {
-                System.out.print(currentNode + ", ");
+                printer.accept(currentNode);
                 isVisited[currentNode] = true;
             }
 
-            for (int i = 0; i < array.length; ++i) {
-                if ((array[currentNode][i] == 1) && (!isVisited[i])) {
+            for (int i = array.length-1; i >= 0; --i) {
+                if (array[currentNode][i] == 1 && !isVisited[i]) {
                     stack.addLast(i);
                 }
             }
         }
     }
 }
-
-
-
-
