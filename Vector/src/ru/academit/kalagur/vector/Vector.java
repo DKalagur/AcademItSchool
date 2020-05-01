@@ -62,6 +62,18 @@ public class Vector {
         }
     }
 
+    public void changeSize(int size) {
+        if (size <= 0) {
+            throw new IllegalArgumentException("Размер вектора должен быть больше 0");
+        }
+
+        if (size == coordinates.length) {
+            return;
+        }
+
+        coordinates = Arrays.copyOf(coordinates, size);
+    }
+
     public void subtractVector(Vector vector) {
         if (coordinates.length < vector.coordinates.length) {
             coordinates = Arrays.copyOf(coordinates, vector.coordinates.length);

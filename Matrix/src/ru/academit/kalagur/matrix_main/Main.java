@@ -12,18 +12,20 @@ public class Main {
         Matrix matrix2 = new Matrix(5, 2);
         System.out.println("Результат работы первого конструктора:" + matrix2);
 
-        double[][] array = {{-1, -3, 11}, {3, 2, 8, 8}};
+        //double[][] array = {{-1, -3, 11}, {3, 2, 8, 8}};
+        double[][] array = new double[3][3];
         Matrix matrix = new Matrix(array);
         System.out.println("Результат работы третьего конструктора:" + matrix);
 
         Matrix matrix1 = new Matrix(matrix);
         System.out.println("Скопированная матрица: " + matrix1);
 
-        /*double[] array1Vector = {1, 5};
+        double[] array1Vector = {1, 5};
         double[] array2Vector = {2, 0, 6};
-        double[] array3Vector = {4};*/
-        // Vector[] vector3 = new Vector[]{new Vector(4), new Vector(array1Vector), new Vector(array2Vector), new Vector(array3Vector)};
-        Vector[] vector3 = new Vector[]{new Vector(1)};
+        double[] array3Vector = {4};
+        // Vector[] vector3 = new Vector[]{new Vector(4), new Vector(array1Vector), new Vector(array2Vector), null, new Vector(array3Vector)};
+        Vector[] vector3 = new Vector[]{new Vector(new double[]{3, 3, 3, 3}), new Vector(new double[]{2, 2, 2, 2}), new Vector(new double[]{1, 1, 1, 1}), new Vector(new double[]{4, 4, 4, 4})};
+        //Vector[] vector3 = new Vector[]{new Vector(1)};
         Matrix matrixVector = new Matrix(vector3);
         System.out.println("Результат работы четвертого конструктора: " + matrixVector);
 
@@ -32,12 +34,12 @@ public class Main {
 
         System.out.println(matrix.getRow(0));
 
-        double[] array2 = {4, 3, 7, 6};
+        double[] array2 = {4, 3, 7};
         Vector vector = new Vector(array2);
         matrix.setRow(1, vector);
         System.out.println(matrix.getRow(0));
 
-        System.out.println("Столбец:" + matrix.getColumn(3));
+        System.out.println("Столбец:" + matrix.getColumn(1));
 
         double[][] array4 = new double[][]{{1, 4, 5, 90}, {8, 2, 10, 32}, {9, -1, 0, 11}};
         Matrix matrix3 = new Matrix(array4);

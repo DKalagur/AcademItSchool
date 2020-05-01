@@ -28,7 +28,7 @@ public class Matrix {
 
     // конструктор3
     public Matrix(double[][] array) {
-        if (array.length <= 0) {
+        if (array.length == 0 || array[0].length == 0) {
             throw new IllegalArgumentException("Количество строк и столбцов матрицы должно быть больше 0");
         }
 
@@ -59,7 +59,9 @@ public class Matrix {
 
         for (Vector e : vectors) {
             if (e != null) {
-                maxLength = e.getSize();
+                if (e.getSize() > maxLength) {
+                    maxLength = e.getSize();
+                }
                 isAllVectorsNull = false;
             }
         }
@@ -73,7 +75,7 @@ public class Matrix {
         for (int i = 0; i < vectors.length; ++i) {
             if (vectors[i] != null) {
                 rows[i] = new Vector(vectors[i]);
-                rows[i].increaseLength(maxLength);
+                rows[i].changeSize(maxLength);
             } else {
                 rows[i] = new Vector(maxLength);
             }
@@ -125,18 +127,10 @@ public class Matrix {
 
     // транспонирование матрицы
     public void transpose() {
-        // создаем массив векторов инвертированного размера
         Vector[] transpose = new Vector[getColumnsQuantity()];
 
-        for (int i = 0; i < transpose.length; i++) {
-            transpose[i] = new Vector(getRowsQuantity());
-        }
-
-        // заполняем массив векторов данными
-        for (int i = 0; i < transpose.length; ++i) {
-            for (int j = 0; j < getRowsQuantity(); ++j) {
-                transpose[i].setElement(j, rows[j].getElement(i));
-            }
+        for (int i = 0; i < getColumnsQuantity(); ++i) {
+            transpose[i] = getColumn(i);
         }
 
         rows = transpose;
@@ -218,7 +212,6 @@ public class Matrix {
         }
     }
 
-
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{");
@@ -238,6 +231,7 @@ public class Matrix {
         }
 
         Vector resultVector = new Vector(getRowsQuantity());
+
         for (int i = 0; i < getRowsQuantity(); ++i) {
             resultVector.setElement(i, Vector.getScalarMultiplication(rows[i], vector));
         }
@@ -301,6 +295,7 @@ public class Matrix {
                 for (int k = 0; k < matrix1.getColumnsQuantity(); ++k) {
                     sum += matrix1.rows[i].getElement(k) * matrix2.rows[k].getElement(j);
                 }
+
                 resultMatrix.rows[i].setElement(j, sum);
             }
         }
