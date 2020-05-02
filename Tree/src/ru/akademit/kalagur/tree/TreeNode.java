@@ -11,40 +11,31 @@ public class TreeNode<T> {
         this.data = data;
     }
 
-    /*public TreeNode(T data) {
-        left = null;
-        right = null;
+    public TreeNode(T data) {
         this.data = data;
-    }*/
+    }
 
-
-    public TreeNode<T> getLeft() {
+    TreeNode<T> getLeft() {
         return left;
     }
 
-    public TreeNode<T> getRight() {
-        return right;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setLeft(TreeNode<T> left) {
+    void setLeft(TreeNode<T> left) {
         this.left = left;
     }
 
-    public void setRight(TreeNode<T> right) {
+    TreeNode<T> getRight() {
+        return right;
+    }
+
+    void setRight(TreeNode<T> right) {
         this.right = right;
     }
 
-    public void setData(T data) {
+    T getData() {
+        return data;
+    }
+
+    void setData(T data) {
         this.data = data;
     }
-/*
-    @Override
-    public int compareTo(T o) {
-        return data.compareTo(o);
-    }
-*/
 }

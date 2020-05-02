@@ -14,6 +14,7 @@ public class Main {
         // tree.addNode(10);
         tree.addNode(20);
         tree.addNode(5);
+        tree.addNode(null);
         tree.addNode(25);
         tree.addNode(21);
         tree.addNode(7);
@@ -44,8 +45,10 @@ public class Main {
         System.out.println(tree1.removeNode(4));
         System.out.println(tree1.contains(4));
         tree1.addNode(20);
+        tree1.addNode(25);
         tree1.addNode(2);
         tree1.addNode(18);
+        tree1.addNode(null);
         tree1.addNode(10);
         tree1.addNode(4);
         tree1.addNode(14);
@@ -53,8 +56,11 @@ public class Main {
         tree1.addNode(16);
         tree1.iterateInDepth(printer);
         System.out.println();
-        System.out.println("Удаление успешно: " + tree1.removeNode(14));
+        System.out.println("Удаление успешно: " + tree1.removeNode(2));
         tree1.iterateInDepth(printer);
+
+        Tree<Integer> tree3 = new Tree<>();
+        System.out.println(tree3.removeNode(null));
 
         //проверка работы конструктора с передачей компаратора
         /*Integer x = 7;
