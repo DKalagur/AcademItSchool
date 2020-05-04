@@ -1,20 +1,20 @@
 package ru.academit.kalagur.model;
 
 public class Model {
-    private Object fromScale;
-    private Object toScale;
-    private int value;
+    private String fromScale;
+    private String toScale;
+    private double value;
 
-    public Model() {
-    }
+ /*   public Model() {
+    }*/
 
-    public Model(Object fromScale, Object toScale, int value) {
+    public Model(String fromScale, String toScale, double value) {
         this.fromScale = fromScale;
         this.toScale = toScale;
         this.value = value;
     }
 
-    public Object getFromScale() {
+ /*   public Object getFromScale() {
         return fromScale;
     }
 
@@ -30,15 +30,15 @@ public class Model {
         this.toScale = toScale;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
     public void setValue(int value) {
         this.value = value;
-    }
+    }*/
 
-    public double convertValue(Object fromScale, Object toScale, int value) {
+    public double convertValue(String fromScale, String toScale, double value) {
         if (fromScale.equals(toScale)) {
             return value;
         }

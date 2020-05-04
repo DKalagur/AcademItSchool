@@ -24,6 +24,7 @@ public class Square implements Shape {
         return sideLength * sideLength;
     }
 
+
     @Override
     public double getPerimeter() {
         return 4 * sideLength;

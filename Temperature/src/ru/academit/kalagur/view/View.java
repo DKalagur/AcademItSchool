@@ -1,6 +1,7 @@
 package ru.academit.kalagur.view;
 
 import ru.academit.kalagur.model.Model;
+import ru.academit.kalagur.model.Temperature;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,7 @@ public class View {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setVisible(true);
             frame.setLocationRelativeTo(null);
+            frame.setMinimumSize(new Dimension((int) (width * 0.42), (int) (height * 0.42)));
 
             Image img = Toolkit.getDefaultToolkit().getImage("icon.jpg");
             frame.setIconImage(img);
@@ -85,6 +87,12 @@ public class View {
             frame.add(fromText, c4);
 
             // создаем и настраиваем fromScale
+
+            Temperature.class.getClasses();
+            System.out.println(Temperature.class.getClasses());
+
+
+            //Temperature[] scales = new Temperature[]{};
             String[] scales = {"Цельсий", "Фаренгейт", "Кельвин"};
             fromScale = new JComboBox<>(scales);
             GridBagConstraints c5 = new GridBagConstraints();
@@ -147,28 +155,27 @@ public class View {
             button.addActionListener(e -> {
                 try {
                     String text = inputField.getText();
-                    Integer number = Integer.parseInt(text);
+                    Double number = Double.parseDouble(text);
 
-                    Object from = fromScale.getSelectedItem();
-                    Object to = toScale.getSelectedItem();
+                    String from = (String) fromScale.getSelectedItem();
+                    String to = (String) toScale.getSelectedItem();
+
 
                     Model model = new Model(from, to, number);
 
                     Double result = model.convertValue(from, to, number);
-
-                    output.setText(result.toString());
+                    output.setText(String.format("%.2f", result));
                     output.setVisible(true);
                 } catch (Exception exception) {
                     output.setText("Ошибка! Введите число!");
                     output.setVisible(true);
                 }
             });
-
         });
     }
 
     //геттеры и сеттеры
-    public JFrame getFrame() {
+ /*   public JFrame getFrame() {
         return frame;
     }
 
@@ -246,5 +253,5 @@ public class View {
 
     public void setOutput(JLabel output) {
         this.output = output;
-    }
+    }*/
 }
