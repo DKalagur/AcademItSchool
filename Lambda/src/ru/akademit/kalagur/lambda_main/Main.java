@@ -13,10 +13,10 @@ public class Main {
                 new Person(5, "Иван"),
                 new Person(25, "Анна"),
                 new Person(30, "Оля"),
-                new Person(10, "Денис"),
+                new Person(10, "Роман"),
                 new Person(24, "Антон"),
                 new Person(19, "Роман"),
-                new Person(15, "Владимир")
+                new Person(15, "Анна")
         ));
 
         // получить список уникальных имен
@@ -44,15 +44,11 @@ public class Main {
         System.out.println(youngPeopleAverageAge);
 
         // получить Map, в котором ключи - имена, а значения - средний возраст
-        double averageAge = persons.stream()
-                .mapToDouble(Person::getAge)
-                .average()
-                .orElse(-1);
+        Map<String, Double> personsByAge = persons
+                .stream()
+                .collect(Collectors.groupingBy(Person::getName, Collectors.averagingDouble(Person::getAge)));
 
-        Map<String, Double> personsByAge = persons.stream()
-                .collect(Collectors.toMap(Person::getName, p -> averageAge));
-
-        System.out.println(personsByAge);
+        System.out.println("Средний возраст по именам: " + personsByAge);
 
         // получить людей, возраст которых от 20 до 45 лет, вывести в консоль их имена в порядке убывания возраста
         List<String> names = persons.stream()
@@ -65,7 +61,9 @@ public class Main {
 
         // Создать бесконечный поток корней чисел. С консоли прочитать число –
         // сколько элементов нужно вычислить, затем – распечатать эти элементы
-        DoubleStream sqrt = DoubleStream.iterate(0, x -> x + 1).map(Math::sqrt);
+        DoubleStream sqrt = DoubleStream
+                .iterate(0, x -> x + 1)
+                .map(Math::sqrt);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -75,7 +73,9 @@ public class Main {
         sqrt.limit(quantity).forEach(System.out::println);
 
         // реализовать бесконечный поток чисел Фибоначчи
-        Stream fibonacciRow = Stream.iterate(new int[]{0, 1}, x -> new int[]{x[1], x[0] + x[1]}).map(x -> x[0]);
-        //fibonacciRow.limit(10).forEach(System.out::println);
+        Stream<Integer> fibonacciRow = Stream
+                .iterate(new int[]{0, 1}, x -> new int[]{x[1], x[0] + x[1]})
+                .map(x -> x[0]);
+        fibonacciRow.limit(10).forEach(System.out::println);
     }
 }
