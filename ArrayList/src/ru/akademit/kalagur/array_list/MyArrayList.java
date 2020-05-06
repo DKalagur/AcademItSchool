@@ -1,4 +1,4 @@
-package ru.akademit.kalagur.arrayList;
+package ru.akademit.kalagur.array_list;
 
 import java.util.*;
 
@@ -14,7 +14,7 @@ public class MyArrayList<E> implements List<E> {
 
     public MyArrayList(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException("Емкость списка должна быть больше 0");
+            throw new IllegalArgumentException("Емкость списка должна быть не менее 0");
         }
 
         //noinspection unchecked
@@ -57,7 +57,7 @@ public class MyArrayList<E> implements List<E> {
             }
 
             if (!hasNext()) {
-                throw new NoSuchElementException();
+                throw new NoSuchElementException("Коллекция закончилась");
             }
 
             ++currentIndex;
@@ -89,14 +89,11 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean add(E e) {
-        ++modCount;
-
-        if (size >= items.length) {
-            increaseCapacity(size);
-        }
+        ensureCapacity(size + 1);
 
         items[size] = e;
         ++size;
+        ++modCount;
 
         return true;
     }
@@ -104,6 +101,7 @@ public class MyArrayList<E> implements List<E> {
     @Override
     public boolean remove(Object o) {
         int index = indexOf(o);
+
         if (index == -1) {
             return false;
         }
@@ -131,16 +129,13 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
-        ++modCount;
-        checkIndex(index, 0);
+        checkIndex(index, false);
 
         if (c.isEmpty()) {
             return false;
         }
 
-        if (size + c.size() > items.length) {
-            increaseCapacity(Math.max(c.size(), size));
-        }
+        ensureCapacity(size + c.size());
 
         System.arraycopy(items, index, items, index + c.size(), size - index);
 
@@ -152,22 +147,24 @@ public class MyArrayList<E> implements List<E> {
         }
 
         size += c.size();
+        ++modCount;
 
         return true;
     }
 
     @Override //возвращает true если удален хотя бы один элемент
     public boolean removeAll(Collection<?> c) {
-        boolean isRemoved = false;
+        int initialSize = size;
 
         for (Object cItem : c) {
-            while (contains(cItem)) {
-                remove(cItem);
-                isRemoved = true;
-            }
+            boolean isExistEqualElements;
+
+            do {
+                isExistEqualElements = remove(cItem);
+            } while (isExistEqualElements);
         }
 
-        return isRemoved;
+        return size != initialSize;
     }
 
     @Override //возвращает true если список изменился
@@ -187,25 +184,24 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public void clear() {
-        ++modCount;
-
         for (int i = 0; i < size; ++i) {
             items[i] = null;
         }
 
         size = 0;
+        ++modCount;
     }
 
     @Override
     public E get(int index) {
-        checkIndex(index, 1);
+        checkIndex(index, true);
 
         return items[index];
     }
 
     @Override
     public E set(int index, E element) {
-        checkIndex(index, 1);
+        checkIndex(index, true);
 
         E tmp = items[index];
         items[index] = element;
@@ -215,12 +211,9 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public void add(int index, E element) {
-        ++modCount;
-        checkIndex(index, 0);
+        checkIndex(index, false);
 
-        if (size >= items.length) {
-            increaseCapacity(size);
-        }
+        ensureCapacity(size + 1);
 
         if (index == size) {
             add(element);
@@ -231,12 +224,12 @@ public class MyArrayList<E> implements List<E> {
 
         items[index] = element;
         ++size;
+        ++modCount;
     }
 
     @Override
     public E remove(int index) {
-        ++modCount;
-        checkIndex(index, 1);
+        checkIndex(index, true);
 
         E tmp = items[index];
 
@@ -246,6 +239,7 @@ public class MyArrayList<E> implements List<E> {
 
         items[size - 1] = null;
         --size;
+        ++modCount;
 
         return tmp;
     }
@@ -306,30 +300,27 @@ public class MyArrayList<E> implements List<E> {
     }
 
     public void trimToSize() {
-        items = Arrays.copyOf(items, size);
+        if (size != items.length) {
+            items = Arrays.copyOf(items, size);
+        }
+
     }
 
-    public void ensureCapacity(int minCapacity) {
+    private void ensureCapacity(int minCapacity) {
         if (items.length < minCapacity) {
             items = Arrays.copyOf(items, minCapacity);
         }
     }
 
-    private void increaseCapacity(int currentLength) {
-        items = Arrays.copyOf(items, (currentLength + 1) * 2);
-    }
-
-    private void checkIndex(int index, int number) {
-        switch (number) {
-            case 0:
-                if (index < 0 || index > size) {
-                    throw new IndexOutOfBoundsException("Недопустимый индекс. Индекс " + index + " выходит за границы списка: (0, " + (size - 1) + ")+1");
-                }
-                break;
-            case 1:
-                if (index < 0 || index >= size) {
-                    throw new IndexOutOfBoundsException("Недопустимый индекс. Индекс " + index + " выходит за границы списка: (0, " + (size - 1) + ")");
-                }
+    private void checkIndex(int index, boolean isInclusively) {
+        if (isInclusively) {
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("Недопустимый индекс. Индекс " + index + " выходит за границы списка: (0, " + (size - 1) + ")");
+            }
+        } else {
+            if (index < 0 || index > size) {
+                throw new IndexOutOfBoundsException("Недопустимый индекс. Индекс " + index + " выходит за границы списка: (0, " + size + ")");
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
-package ru.akademit.kalagur.arrayList_main;
+package ru.akademit.kalagur.array_list_main;
 
-import ru.akademit.kalagur.arrayList.MyArrayList;
+import ru.akademit.kalagur.array_list.MyArrayList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,13 +70,16 @@ public class Main {
 
 // проверка addAll (index)
         System.out.println("Проверка addAll(index)");
-        ArrayList<Integer> c1 = new ArrayList<>(Arrays.asList(99, 100, 101));
+        ArrayList<Integer> c1 = new ArrayList<>(Arrays.asList(99, 100, 101, 100));
         System.out.println(newList.addAll(3, c1));
         System.out.println(newList);
 
 // проверка toArray
-        Integer[] array2 = {100, 101, 102, 103, 104, 105, 106, 107};
+        Integer[] array2 = {100, 101, 102, 103, 104, 100, 100, 105, 106, 107};
         Integer[] result = newList.toArray(array2);
+        ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(1, 7));
+        System.out.println(newList.removeAll(list2));
+        System.out.println("После removeAll:" + newList);
         System.out.println("Выдаваемый массив" + Arrays.asList(result));
         System.out.println("Входной массив" + Arrays.asList(array2));
 
@@ -111,9 +114,9 @@ public class Main {
         MyArrayList<Integer> ap = new MyArrayList<>(0);
         ap.add(34);
         System.out.println(ap);
-        ap.add(1,5);
+        ap.add(1, 5);
         System.out.println(ap);
-        ap.remove((Integer)5);
+        ap.remove((Integer) 5);
         //System.out.println(ap);
         ap.add(null);
         ap.add(10);
@@ -124,13 +127,13 @@ public class Main {
         ap.add(100);
         ap.add(666);
         System.out.println(ap);
-        ap.remove((Integer)11);
+        ap.remove((Integer) 11);
         System.out.println(ap);
         System.out.println(ap.contains(13));
         System.out.println(ap.lastIndexOf(10));
 
-        ArrayList<Integer> ccc = new ArrayList<>(Arrays.asList(-1,-2,-3,-4));
-        ap.addAll(1,ccc);
+        ArrayList<Integer> ccc = new ArrayList<>(Arrays.asList(-1, -2, -3, -4));
+        ap.addAll(1, ccc);
         ap.clear();
         System.out.println(ap);
 
