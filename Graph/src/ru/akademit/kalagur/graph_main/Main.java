@@ -11,8 +11,11 @@ public class Main {
 
         Graph graph = new Graph(array);
         Consumer<Integer> printer = x -> System.out.print(x + ", ");
+
         System.out.println("Обход в ширину: ");
         graph.iterateInWidth(printer);
+        System.out.println();
+
         System.out.println();
         System.out.println("Обход в глубину: ");
         graph.iterateInDepth(printer);
