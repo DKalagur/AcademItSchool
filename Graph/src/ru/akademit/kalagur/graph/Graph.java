@@ -26,6 +26,7 @@ public class Graph {
     public void iterateInWidth(Consumer<Integer> printer) {
         boolean[] isVisited = new boolean[array.length];
         LinkedList<Integer> queue = new LinkedList<>();
+
         queue.addLast(0);
 
         visitInWidth(queue, isVisited, printer);
@@ -38,7 +39,7 @@ public class Graph {
         }
     }
 
-    private void visitInWidth(LinkedList<Integer> queue, boolean isVisited[], Consumer<Integer> printer) {
+    private void visitInWidth(LinkedList<Integer> queue, boolean[] isVisited, Consumer<Integer> printer) {
         while (!queue.isEmpty()) {
             int currentNode = queue.remove();
 
@@ -70,7 +71,7 @@ public class Graph {
         }
     }
 
-    private void visitInDepth(LinkedList<Integer> stack, boolean isVisited[], Consumer<Integer> printer) {
+    private void visitInDepth(LinkedList<Integer> stack, boolean[] isVisited, Consumer<Integer> printer) {
         while (!stack.isEmpty()) {
             int currentNode = stack.removeLast();
 
@@ -79,7 +80,7 @@ public class Graph {
                 isVisited[currentNode] = true;
             }
 
-            for (int i = array.length-1; i >= 0; --i) {
+            for (int i = array.length - 1; i >= 0; --i) {
                 if (array[currentNode][i] == 1 && !isVisited[i]) {
                     stack.addLast(i);
                 }
