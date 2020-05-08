@@ -1,7 +1,6 @@
 package ru.academit.kalagur.view;
 
-import ru.academit.kalagur.model.Model;
-import ru.academit.kalagur.model.Temperature;
+import ru.academit.kalagur.model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +12,8 @@ public class View {
     private JTextField inputField;
     private JLabel fromText;
     private JLabel toText;
-    private JComboBox<String> fromScale;
-    private JComboBox<String> toScale;
+    private JComboBox<TemperatureScale> fromScale;
+    private JComboBox<TemperatureScale> toScale;
     private JButton button;
     private JLabel output;
 
@@ -87,13 +86,8 @@ public class View {
             frame.add(fromText, c4);
 
             // создаем и настраиваем fromScale
+            TemperatureScale[] scales = Model.getScales();
 
-            Temperature.class.getClasses();
-            System.out.println(Temperature.class.getClasses());
-
-
-            //Temperature[] scales = new Temperature[]{};
-            String[] scales = {"Цельсий", "Фаренгейт", "Кельвин"};
             fromScale = new JComboBox<>(scales);
             GridBagConstraints c5 = new GridBagConstraints();
 
@@ -155,15 +149,12 @@ public class View {
             button.addActionListener(e -> {
                 try {
                     String text = inputField.getText();
-                    Double number = Double.parseDouble(text);
+                    double number = Double.parseDouble(text);
 
-                    String from = (String) fromScale.getSelectedItem();
-                    String to = (String) toScale.getSelectedItem();
+                    TemperatureScale from = (TemperatureScale) fromScale.getSelectedItem();
+                    TemperatureScale to = (TemperatureScale) toScale.getSelectedItem();
+                    double result = Model.convertValue(from, to, number);
 
-
-                    Model model = new Model(from, to, number);
-
-                    Double result = model.convertValue(from, to, number);
                     output.setText(String.format("%.2f", result));
                     output.setVisible(true);
                 } catch (Exception exception) {
@@ -173,85 +164,4 @@ public class View {
             });
         });
     }
-
-    //геттеры и сеттеры
- /*   public JFrame getFrame() {
-        return frame;
-    }
-
-    public void setFrame(JFrame frame) {
-        this.frame = frame;
-    }
-
-    public JLabel getHeader() {
-        return header;
-    }
-
-    public void setHeader(JLabel header) {
-        this.header = header;
-    }
-
-    public JLabel getOffer() {
-        return offer;
-    }
-
-    public void setOffer(JLabel offer) {
-        this.offer = offer;
-    }
-
-    public JTextField getInputField() {
-        return inputField;
-    }
-
-    public void setInputField(JTextField inputField) {
-        this.inputField = inputField;
-    }
-
-    public JLabel getFromText() {
-        return fromText;
-    }
-
-    public void setFromText(JLabel fromText) {
-        this.fromText = fromText;
-    }
-
-    public JLabel getToText() {
-        return toText;
-    }
-
-    public void setToText(JLabel toText) {
-        this.toText = toText;
-    }
-
-    public JComboBox<String> getFromScale() {
-        return fromScale;
-    }
-
-    public void setFromScale(JComboBox<String> fromScale) {
-        this.fromScale = fromScale;
-    }
-
-    public JComboBox<String> getToScale() {
-        return toScale;
-    }
-
-    public void setToScale(JComboBox<String> toScale) {
-        this.toScale = toScale;
-    }
-
-    public JButton getButton() {
-        return button;
-    }
-
-    public void setButton(JButton button) {
-        this.button = button;
-    }
-
-    public JLabel getOutput() {
-        return output;
-    }
-
-    public void setOutput(JLabel output) {
-        this.output = output;
-    }*/
 }

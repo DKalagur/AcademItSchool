@@ -1,68 +1,14 @@
 package ru.academit.kalagur.model;
 
 public class Model {
-    private String fromScale;
-    private String toScale;
-    private double value;
+    // при добавлении новой шкалы добавить новый объект
+    private static TemperatureScale[] scales = new TemperatureScale[]{new Celsius(), new Kelvin(), new Fahrenheit()};
 
- /*   public Model() {
-    }*/
-
-    public Model(String fromScale, String toScale, double value) {
-        this.fromScale = fromScale;
-        this.toScale = toScale;
-        this.value = value;
+    public static TemperatureScale[] getScales() {
+        return scales;
     }
 
- /*   public Object getFromScale() {
-        return fromScale;
-    }
-
-    public void setFromScale(Object fromScale) {
-        this.fromScale = fromScale;
-    }
-
-    public Object getToScale() {
-        return toScale;
-    }
-
-    public void setToScale(Object toScale) {
-        this.toScale = toScale;
-    }
-
-    public double getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }*/
-
-    public double convertValue(String fromScale, String toScale, double value) {
-        if (fromScale.equals(toScale)) {
-            return value;
-        }
-
-        if (fromScale.equals("Цельсий") && toScale.equals("Кельвин")) {
-            return value + 273.15;
-        }
-
-        if (fromScale.equals("Цельсий") && toScale.equals("Фаренгейт")) {
-            return value * 9 / 5 + 32;
-        }
-
-        if (fromScale.equals("Кельвин") && toScale.equals("Цельсий")) {
-            return value - 273.15;
-        }
-
-        if (fromScale.equals("Кельвин") && toScale.equals("Фаренгейт")) {
-            return (value - 273.15) * 9 / 5 + 32;
-        }
-
-        if (fromScale.equals("Фаренгейт") && toScale.equals("Цельсий")) {
-            return (value - 32) * 5 / 9;
-        }
-
-        return (value - 32) * 5 / 9 + 273.15;
+    public static double convertValue(TemperatureScale fromScale, TemperatureScale toScale, double value) {
+        return toScale.convertFromCelsius(fromScale.convertToCelsius(value));
     }
 }
