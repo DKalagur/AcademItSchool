@@ -1,6 +1,7 @@
 package ru.academit.kalagur.view;
 
-import ru.academit.kalagur.model.*;
+import ru.academit.kalagur.model.Model;
+import ru.academit.kalagur.model.TemperatureScale;
 
 import javax.swing.*;
 import java.awt.*;
@@ -157,7 +158,7 @@ public class View {
 
                     output.setText(String.format("%.2f", result));
                     output.setVisible(true);
-                } catch (Exception exception) {
+                } catch (NumberFormatException exception) {
                     output.setText("Ошибка! Введите число!");
                     output.setVisible(true);
                 }
