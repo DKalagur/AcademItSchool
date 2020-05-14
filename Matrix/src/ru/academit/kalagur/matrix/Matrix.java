@@ -28,7 +28,7 @@ public class Matrix {
 
     // конструктор3
     public Matrix(double[][] array) {
-        if (array.length == 0 || array[0].length == 0) {
+        if (array.length == 0) {
             throw new IllegalArgumentException("Количество строк и столбцов матрицы должно быть больше 0");
         }
 
