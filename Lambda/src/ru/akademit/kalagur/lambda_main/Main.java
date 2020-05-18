@@ -48,7 +48,7 @@ public class Main {
                 .stream()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.averagingDouble(Person::getAge)));
 
-        System.out.println("Средний возраст по именам: " + averageAgeByNames);
+        System.out.println("Средний возраст по именам: " + averageAgeByNames);  
 
         // получить людей, возраст которых от 20 до 45 лет, вывести в консоль их имена в порядке убывания возраста
         List<String> names = persons.stream()
