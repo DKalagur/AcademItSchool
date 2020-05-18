@@ -8,7 +8,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 public class Main {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         List<Person> persons = new ArrayList<>(Arrays.asList(
                 new Person(5, "Иван"),
                 new Person(25, "Анна"),
@@ -44,11 +44,11 @@ public class Main {
         System.out.println(youngPeopleAverageAge);
 
         // получить Map, в котором ключи - имена, а значения - средний возраст
-        Map<String, Double> personsByAge = persons
+        Map<String, Double> averageAgeByNames = persons
                 .stream()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.averagingDouble(Person::getAge)));
 
-        System.out.println("Средний возраст по именам: " + personsByAge);
+        System.out.println("Средний возраст по именам: " + averageAgeByNames);
 
         // получить людей, возраст которых от 20 до 45 лет, вывести в консоль их имена в порядке убывания возраста
         List<String> names = persons.stream()
