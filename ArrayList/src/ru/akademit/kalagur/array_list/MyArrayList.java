@@ -14,7 +14,7 @@ public class MyArrayList<E> implements List<E> {
 
     public MyArrayList(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException("Емкость списка должна быть не менее 0");
+            throw new IllegalArgumentException("Емкость списка должна быть не менее 0. Переданное значение емкости списка: " + capacity);
         }
 
         //noinspection unchecked
@@ -89,7 +89,9 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public boolean add(E e) {
-        ensureCapacity(size + 1);
+        if (size >= items.length) {
+            increaseCapacity();
+        }
 
         items[size] = e;
         ++size;
@@ -213,7 +215,9 @@ public class MyArrayList<E> implements List<E> {
     public void add(int index, E element) {
         checkIndex(index, false);
 
-        ensureCapacity(size + 1);
+        if (size >= items.length) {
+            increaseCapacity();
+        }
 
         if (index == size) {
             add(element);
@@ -303,13 +307,16 @@ public class MyArrayList<E> implements List<E> {
         if (size != items.length) {
             items = Arrays.copyOf(items, size);
         }
-
     }
 
     private void ensureCapacity(int minCapacity) {
         if (items.length < minCapacity) {
             items = Arrays.copyOf(items, minCapacity);
         }
+    }
+
+    private void increaseCapacity() {
+        items = Arrays.copyOf(items, (items.length + 1) * 2);
     }
 
     private void checkIndex(int index, boolean isInclusively) {

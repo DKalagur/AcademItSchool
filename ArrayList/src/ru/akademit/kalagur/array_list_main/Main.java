@@ -12,10 +12,12 @@ public class Main {
         newList.add(12);
         newList.add(-4);
         System.out.println(newList);
+
         for (Integer tmp : newList) {
             System.out.println(tmp);
         }
 
+        MyArrayList<Double> d = new MyArrayList<>(-1);
 
         System.out.println("Размер списка: " + newList.size());
         Object[] a = newList.toArray();
@@ -44,7 +46,6 @@ public class Main {
         // проверка contains
         System.out.println("Массив содержит объект: " + newList.contains(66));
 
-
         // проверка containsAll
         System.out.println("Размер массива: " + newList.size());
         ArrayList<Integer> cc = new ArrayList<>(Arrays.asList(56, 666, 56));
@@ -68,13 +69,13 @@ public class Main {
         newList.add(0, 1000);
         System.out.println("После add(index): " + newList);
 
-// проверка addAll (index)
+        // проверка addAll (index)
         System.out.println("Проверка addAll(index)");
         ArrayList<Integer> c1 = new ArrayList<>(Arrays.asList(99, 100, 101, 100));
         System.out.println(newList.addAll(3, c1));
         System.out.println(newList);
 
-// проверка toArray
+        // проверка toArray
         Integer[] array2 = {100, 101, 102, 103, 104, 100, 100, 105, 106, 107};
         Integer[] result = newList.toArray(array2);
         ArrayList<Integer> list2 = new ArrayList<>(Arrays.asList(1, 7));
