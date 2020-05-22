@@ -1,6 +1,6 @@
 package ru.academit.kalagur.model;
 
-public class Kelvin implements TemperatureScale {
+public class KelvinTemperatureScale implements TemperatureScale {
     @Override
     public double convertToCelsius(double value) {
         return value - 273.15;

@@ -1,18 +1,18 @@
 package ru.academit.kalagur.model;
 
-public class Fahrenheit implements TemperatureScale {
+public class CelsiusTemperatureScale implements TemperatureScale {
     @Override
     public double convertToCelsius(double value) {
-        return (value - 32) * 5 / 9;
+        return value;
     }
 
     @Override
     public double convertFromCelsius(double value) {
-        return value * 9 / 5 + 32;
+        return value;
     }
 
     @Override
     public String toString() {
-        return "Фаренгейт";
+        return "Цельсий";
     }
 }

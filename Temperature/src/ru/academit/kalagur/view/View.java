@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class View {
+    private Model model;
     private JFrame frame;
     private JLabel header;
     private JLabel offer;
@@ -18,7 +19,9 @@ public class View {
     private JButton button;
     private JLabel output;
 
-    public View() {
+    public View(Model inputModel) {
+        model = inputModel;
+
         SwingUtilities.invokeLater(() -> {
             // создаем frame
             frame = new JFrame("Программа перевода температур");
@@ -87,7 +90,7 @@ public class View {
             frame.add(fromText, c4);
 
             // создаем и настраиваем fromScale
-            TemperatureScale[] scales = Model.getScales();
+            TemperatureScale[] scales = model.getScales();
 
             fromScale = new JComboBox<>(scales);
             GridBagConstraints c5 = new GridBagConstraints();
@@ -154,7 +157,7 @@ public class View {
 
                     TemperatureScale from = (TemperatureScale) fromScale.getSelectedItem();
                     TemperatureScale to = (TemperatureScale) toScale.getSelectedItem();
-                    double result = Model.convertValue(from, to, number);
+                    double result = Model.convertTemperature(from, to, number);
 
                     output.setText(String.format("%.2f", result));
                     output.setVisible(true);

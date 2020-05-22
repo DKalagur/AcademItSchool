@@ -2,13 +2,17 @@ package ru.academit.kalagur.model;
 
 public class Model {
     // при добавлении новой шкалы добавить новый объект
-    private static TemperatureScale[] scales = new TemperatureScale[]{new Celsius(), new Kelvin(), new Fahrenheit()};
+    private final TemperatureScale[] scales;
 
-    public static TemperatureScale[] getScales() {
+    public Model(TemperatureScale[] scales) {
+        this.scales = scales;
+    }
+
+    public TemperatureScale[] getScales() {
         return scales;
     }
 
-    public static double convertValue(TemperatureScale fromScale, TemperatureScale toScale, double value) {
+    public static double convertTemperature(TemperatureScale fromScale, TemperatureScale toScale, double value) {
         return toScale.convertFromCelsius(fromScale.convertToCelsius(value));
     }
 }
