@@ -309,7 +309,7 @@ public class MyArrayList<E> implements List<E> {
         }
     }
 
-    private void ensureCapacity(int minCapacity) {
+    public void ensureCapacity(int minCapacity) {
         if (items.length < minCapacity) {
             items = Arrays.copyOf(items, minCapacity);
         }

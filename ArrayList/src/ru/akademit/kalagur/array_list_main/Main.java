@@ -17,7 +17,7 @@ public class Main {
             System.out.println(tmp);
         }
 
-        MyArrayList<Double> d = new MyArrayList<>(-1);
+        MyArrayList<Double> d = new MyArrayList<>(4);
 
         System.out.println("Размер списка: " + newList.size());
         Object[] a = newList.toArray();
