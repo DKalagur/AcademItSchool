@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class ArrayListHomeMain {
-
     //первая подзадача
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(new FileInputStream("текст.txt"), "windows-1251")) {
