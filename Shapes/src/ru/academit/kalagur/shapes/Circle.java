@@ -1,7 +1,7 @@
 package ru.academit.kalagur.shapes;
 
 public class Circle implements Shape {
-    private static final String shapeType = "Круг";
+    private static final String SHAPE_TYPE = "Круг";
 
     private double radius;
 
@@ -31,7 +31,7 @@ public class Circle implements Shape {
 
     @Override
     public String toString() {
-        return "Тип фигуры: " + shapeType + System.lineSeparator() +
+        return "Тип фигуры: " + SHAPE_TYPE + System.lineSeparator() +
                 "Радиус: " + radius + System.lineSeparator() +
                 "Площадь фигуры: " + getArea() + System.lineSeparator() +
                 "Периметр фигуры: " + getPerimeter();
@@ -42,9 +42,11 @@ public class Circle implements Shape {
         if (this == o) {
             return true;
         }
+
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         Circle circle = (Circle) o;
 
         return circle.radius == radius;

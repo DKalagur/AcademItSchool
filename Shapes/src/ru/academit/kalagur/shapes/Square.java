@@ -1,7 +1,7 @@
 package ru.academit.kalagur.shapes;
 
 public class Square implements Shape {
-    private static final String shapeType = "Квадрат";
+    private static final String SHAPE_TYPE = "Квадрат";
 
     private double sideLength;
 
@@ -32,7 +32,7 @@ public class Square implements Shape {
 
     @Override
     public String toString() {
-        return "Тип фигуры: " + shapeType + System.lineSeparator() +
+        return "Тип фигуры: " + SHAPE_TYPE + System.lineSeparator() +
                 "Длина стороны: " + sideLength + System.lineSeparator() +
                 "Площадь фигуры: " + getArea() + System.lineSeparator() +
                 "Периметр фигуры: " + getPerimeter();
@@ -43,9 +43,11 @@ public class Square implements Shape {
         if (this == o) {
             return true;
         }
+
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         Square square = (Square) o;
 
         return sideLength == square.sideLength;

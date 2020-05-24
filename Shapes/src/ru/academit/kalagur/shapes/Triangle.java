@@ -1,7 +1,7 @@
 package ru.academit.kalagur.shapes;
 
 public class Triangle implements Shape {
-    private static final String shapeType = "Треугольник";
+    private static final String SHAPE_TYPE = "Треугольник";
 
     private double x1;
     private double y1;
@@ -46,7 +46,7 @@ public class Triangle implements Shape {
 
     @Override
     public String toString() {
-        return "Тип фигуры: " + shapeType + System.lineSeparator() +
+        return "Тип фигуры: " + SHAPE_TYPE + System.lineSeparator() +
                 "Координаты вершин: (" + x1 + ", " + y1 + "), (" + x2 + ", " + y2 + "), (" + x3 + ", " + y3 + ")" +
                 System.lineSeparator() + "Площадь фигуры: " + getArea() + System.lineSeparator() +
                 "Периметр фигуры: " + getPerimeter();
@@ -57,9 +57,11 @@ public class Triangle implements Shape {
         if (this == o) {
             return true;
         }
+
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         Triangle triangle = (Triangle) o;
 
         return triangle.x1 == x1 &&

@@ -1,7 +1,7 @@
 package ru.academit.kalagur.shapes;
 
 public class Rectangle implements Shape {
-    private static final String shapeType = "Прямоугольник";
+    private static final String SHAPE_TYPE = "Прямоугольник";
 
     private double height;
     private double width;
@@ -33,7 +33,7 @@ public class Rectangle implements Shape {
 
     @Override
     public String toString() {
-        return "Тип фигуры: " + shapeType + System.lineSeparator() +
+        return "Тип фигуры: " + SHAPE_TYPE + System.lineSeparator() +
                 "Ширина: " + width + System.lineSeparator() +
                 "Высота: " + height + System.lineSeparator() +
                 "Площадь фигуры: " + getArea() + System.lineSeparator() +
@@ -45,9 +45,11 @@ public class Rectangle implements Shape {
         if (this == o) {
             return true;
         }
+
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+
         Rectangle rectangle = (Rectangle) o;
 
         return rectangle.height == height && rectangle.width == width;
