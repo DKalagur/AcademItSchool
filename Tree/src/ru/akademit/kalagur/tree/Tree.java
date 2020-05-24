@@ -22,23 +22,23 @@ public class Tree<T> {
         ++count;
     }
 
-    private int compare(T currentNodeData, T data) {
+    private int compare(T data1, T data2) {
         if (comparator != null) {
-            return comparator.compare(currentNodeData, data);
+            return comparator.compare(data1, data2);
         }
 
-        if (currentNodeData == null && data == null) {
+        if (data1 == null && data2 == null) {
             return 0;
-        } else if (currentNodeData == null) {
+        } else if (data1 == null) {
             return -1;
-        } else if (data == null) {
+        } else if (data2 == null) {
             return 1;
         }
 
         //noinspection unchecked
-        Comparable<T> temp = (Comparable<T>) currentNodeData;
+        Comparable<T> temp = (Comparable<T>) data1;
 
-        return temp.compareTo(data);
+        return temp.compareTo(data2);
     }
 
     public void addNode(T data) {
