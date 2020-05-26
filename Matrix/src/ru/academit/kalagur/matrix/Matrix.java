@@ -29,7 +29,7 @@ public class Matrix {
     // конструктор3
     public Matrix(double[][] array) {
         if (array.length == 0) {
-            throw new IllegalArgumentException("Количество строк и столбцов матрицы должно быть больше 0");
+            throw new IllegalArgumentException("Количество строк матрицы должно быть больше 0");
         }
 
         int maxLength = array[0].length;
@@ -39,10 +39,14 @@ public class Matrix {
             }
         }
 
-        rows = new Vector[array.length];
+        if (maxLength == 0) {
+            throw new IllegalArgumentException("Размер хотя бы одной строки матрицы должен быть больше 0");
+        } else {
+            rows = new Vector[array.length];
 
-        for (int i = 0; i < array.length; ++i) {
-            rows[i] = new Vector(maxLength, array[i]);
+            for (int i = 0; i < array.length; ++i) {
+                rows[i] = new Vector(maxLength, array[i]);
+            }
         }
     }
 

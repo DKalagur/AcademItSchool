@@ -13,7 +13,8 @@ public class Main {
         System.out.println("Результат работы первого конструктора:" + matrix2);
 
         //double[][] array = {{-1, -3, 11}, {3, 2, 8, 8}};
-        double[][] array = new double[3][3];
+        //double[][] array = {{},{},{}};
+        double[][] array = new double[][]{{}, {1, 2}, {2, 3, 4}};
         Matrix matrix = new Matrix(array);
         System.out.println("Результат работы третьего конструктора:" + matrix);
 
